@@ -1,0 +1,66 @@
+package org.KTKT.Utils.WindowManager;
+
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import org.KTKT.Application;
+
+import java.io.IOException;
+
+public class WindowManager {
+    /**
+     * Get a new stage.
+     * @param resource
+     * @param controller
+     * @return
+     * @throws IOException
+     */
+    public static Stage getStage(String resource, Object controller) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource(resource));
+        fxmlLoader.setController(controller);
+        Scene scene = new Scene(fxmlLoader.load());
+        Stage newStage = new Stage();
+        newStage.setTitle("Informacijos redagavimas.");
+        newStage.setScene(scene);
+        newStage.setResizable(false);
+        return newStage;
+    }
+
+    /**
+     * Open a new window. Hide the current window.
+     * @param event
+     * @param resource
+     * @param controller
+     * @throws IOException
+     */
+    public static void openWindow(MouseEvent event, String resource, Object controller) throws IOException {
+        // open studentEditor.fxml window
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        stage.hide(); // hide the current window
+
+        Stage newStage = getStage(resource, controller);
+        newStage.show();
+
+        newStage.setOnCloseRequest(e -> {
+            stage.show();
+        });
+    }
+
+    public static void openOverlayWindow(MouseEvent event, String resource, Object controller) throws IOException {
+        Stage stage = getStage(resource, controller);
+
+        // Get the current stage
+        Node source = (Node) event.getSource();
+        Stage currentStage = (Stage) source.getScene().getWindow();
+
+        // Set the new stage as modal and set its owner to the current stage
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(currentStage);
+
+        stage.show();
+    }
+}

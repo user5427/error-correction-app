@@ -1,23 +1,29 @@
-package Utils.Matrix;
+package org.KTKT.Data.Matrix;
 
-public class MatrixImpl implements Matrix, Cloneable {
-    private double[][] matrix;
+public class Matrix implements MatrixInt, Cloneable {
+    private int[][] matrix;
     private int rows;
     private int columns;
 
-    public MatrixImpl(int rows, int columns) {
+    public Matrix(int rows, int columns) {
+        if (rows <= 0 || columns <= 0) {
+            throw new IllegalArgumentException("Invalid number of rows or columns");
+        }
         this.rows = rows;
         this.columns = columns;
-        matrix = new double[rows][columns];
+        matrix = new int[rows][columns];
     }
 
-    public MatrixImpl(double[][] values) {
+    public Matrix(int[][] values) {
+        if (values.length == 0 || values[0].length == 0) {
+            throw new IllegalArgumentException("Invalid number of rows or columns");
+        }
         rows = values.length;
         columns = values[0].length;
         matrix = values;
     }
 
-    public MatrixImpl(Matrix other) {
+    public Matrix(MatrixInt other) {
         rows = other.getRows();
         columns = other.getColumns();
         matrix = other.getAll();
@@ -34,7 +40,7 @@ public class MatrixImpl implements Matrix, Cloneable {
     }
 
     @Override
-    public double get(int row, int column) {
+    public int get(int row, int column) {
         if (row < 0 || row >= rows || column < 0 || column >= columns) {
             throw new IllegalArgumentException("Invalid row or column index");
         }
@@ -42,7 +48,7 @@ public class MatrixImpl implements Matrix, Cloneable {
     }
 
     @Override
-    public void set(int row, int column, double value) {
+    public void set(int row, int column, int value) {
         if (row < 0 || row >= rows || column < 0 || column >= columns) {
             throw new IllegalArgumentException("Invalid row or column index");
         }
@@ -50,7 +56,7 @@ public class MatrixImpl implements Matrix, Cloneable {
     }
 
     @Override
-    public void setRow(int row, double[] values) {
+    public void setRow(int row, int[] values) {
         if (row < 0 || row >= rows || values.length != columns) {
             throw new IllegalArgumentException("Invalid row index or number of values");
         }
@@ -58,7 +64,7 @@ public class MatrixImpl implements Matrix, Cloneable {
     }
 
     @Override
-    public void setColumn(int column, double[] values) {
+    public void setColumn(int column, int[] values) {
         if (column < 0 || column >= columns || values.length != rows) {
             throw new IllegalArgumentException("Invalid column index or number of values");
         }
@@ -68,7 +74,7 @@ public class MatrixImpl implements Matrix, Cloneable {
     }
 
     @Override
-    public double[] getRow(int row) {
+    public int[] getRow(int row) {
         if (row < 0 || row >= rows) {
             throw new IllegalArgumentException("Invalid row index");
         }
@@ -76,11 +82,11 @@ public class MatrixImpl implements Matrix, Cloneable {
     }
 
     @Override
-    public double[] getColumn(int column) {
+    public int[] getColumn(int column) {
         if (column < 0 || column >= columns) {
             throw new IllegalArgumentException("Invalid column index");
         }
-            double[] values = new double[rows];
+            int[] values = new int[rows];
             for (int i = 0; i < rows; i++) {
                 values[i] = matrix[i][column];
             }
@@ -88,7 +94,7 @@ public class MatrixImpl implements Matrix, Cloneable {
     }
 
     @Override
-    public void setAll(double[][] values) {
+    public void setAll(int[][] values) {
         if (values.length != rows || values[0].length != columns) {
             throw new IllegalArgumentException("Invalid number of rows or columns");
         }
@@ -96,12 +102,12 @@ public class MatrixImpl implements Matrix, Cloneable {
     }
 
     @Override
-    public double[][] getAll() {
+    public int[][] getAll() {
         return matrix;
     }
 
     @Override
-    public Matrix add(Matrix other) {
+    public MatrixInt add(MatrixInt other) {
         if (other.getRows() != rows || other.getColumns() != columns) {
             throw new IllegalArgumentException("Matrices must have the same dimensions");
         }
@@ -114,7 +120,7 @@ public class MatrixImpl implements Matrix, Cloneable {
     }
 
     @Override
-    public Matrix subtract(Matrix other) {
+    public MatrixInt subtract(MatrixInt other) {
         if (other.getRows() != rows || other.getColumns() != columns) {
             throw new IllegalArgumentException("Matrices must have the same dimensions");
         }
@@ -128,56 +134,74 @@ public class MatrixImpl implements Matrix, Cloneable {
 
     /**
      * Multiply two matrices
-     * result = this * other
-     * result is not this or other
+     * result is this
      * @param other
      * @return
      */
     @Override
-    public Matrix multiply(Matrix other) {
+    public MatrixInt multiply(MatrixInt other) {
         if (columns != other.getRows()) {
             throw new IllegalArgumentException("Invalid matrix dimensions");
         }
 
-        Matrix result = new MatrixImpl(rows, other.getColumns());
+        int[][] result = new int[rows][other.getColumns()];
 
         for (int i = 0; i < rows; i++)
             for (int j = 0; j < other.getColumns(); j++) {
-                double sum = 0;
+                int sum = 0;
                 for (int k = 0; k < columns; k++)
                     sum += matrix[i][k] * other.get(k, j);
-                result.set(i, j, sum);
+                result[i][j] = sum;
             }
-        return result;
-    }
 
-    @Override
-    public Matrix multiply(double scalar) {
-        for (int i = 0; i < rows; i++)
-            for (int j = 0; j < columns; j++) {
-                matrix[i][j] *= scalar;
-            }
+        matrix = result;
+        rows = result.length;
+        columns = result[0].length;
         return this;
     }
 
     /**
      * Transpose the matrix
-     * result is not this
+     * result is this
      * @param other
      * @return
      */
     @Override
-    public Matrix transpose(Matrix other) {
-        Matrix result = new MatrixImpl(columns, rows);
+    public MatrixInt transpose(MatrixInt other) {
+        int [][] result = new int[columns][rows];
         for (int i = 0; i < rows; i++)
             for (int j = 0; j < columns; j++) {
-                result.set(j, i, matrix[i][j]);
+                result[j][i] = matrix[i][j];
             }
-        return result;
+
+        matrix = result;
+        rows = result.length;
+        columns = result[0].length;
+        return this;
+    }
+
+    public void printMatrix() {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                sb.append(matrix[i][j]).append(" ");
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
     }
 
     @Override
-    public Matrix clone() {
-        return new MatrixImpl(this);
+    public MatrixInt clone() {
+        return new Matrix(this);
     }
 }

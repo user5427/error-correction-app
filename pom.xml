@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>KTKT_A11</groupId>
+  <groupId>org</groupId>
   <artifactId>KTKT</artifactId>
   <version>1.0-SNAPSHOT</version>
   <name>A11_Uzduotis</name>
@@ -14,6 +14,11 @@
 <junit.version>5.10.0</junit.version>  </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>io.github.mkpaz</groupId>
+      <artifactId>atlantafx-base</artifactId>
+      <version>2.0.1</version>
+    </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
@@ -36,7 +41,10 @@
       <artifactId>junit-jupiter-engine</artifactId>
       <version>${junit.version}</version>
       <scope>test</scope>
-    </dependency>  </dependencies>
+    </dependency>
+
+
+  </dependencies>
 
   <build>
     <plugins>
@@ -58,7 +66,7 @@
             <!-- Default configuration for running with: mvn clean javafx:run -->
             <id>default-cli</id>
             <configuration>
-              <mainClass>Main.Application</mainClass>
+              <mainClass>org.KTKT.Application</mainClass>
               <launcher>app</launcher>
               <jlinkZipName>app</jlinkZipName>
               <jlinkImageName>app</jlinkImageName>

@@ -4,9 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f6af7e37-be83-48ff-bd18-c42f00dd7c97" name="Changes" comment="Created project, added initial Matrix interface file.">
+    <list default="true" id="f6af7e37-be83-48ff-bd18-c42f00dd7c97" name="Changes" comment="Implemented basic Matrix functions.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/KTKT/Utils/WindowManager/WindowManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Utils/Matrix/MatrixImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Utils/Matrix/MatrixImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/KTKT/Application.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main/HomePageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/KTKT/HomePageController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Utils/Matrix/Matrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/KTKT/Utils/Matrix/MatrixInt.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Utils/Matrix/MatrixImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/KTKT/Utils/Matrix/Matrix.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +27,12 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -28,30 +40,53 @@
       </MavenGeneralSettings>
     </option>
   </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2n3Qt1wMubZ2B3zIyJHbWr29ZPi" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
-    <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.Application.executor": "Run",
+    "Maven.KTKT [clean].executor": "Run",
+    "Maven.KTKT [org.apache.maven.plugins:maven-clean-plugin:2.5:clean].executor": "Run",
+    "Maven.KTKT [org.apache.maven.plugins:maven-resources-plugin:2.6:testResources].executor": "Run",
+    "Maven.KTKT [org.openjfx:javafx-maven-plugin:0.0.8:jlink].executor": "Run",
+    "Maven.KTKT [org.openjfx:javafx-maven-plugin:0.0.8:run].executor": "Run",
+    "Maven.KTKT_A11 [clean].executor": "Run",
+    "Maven.KTKT_A11 [compile].executor": "Run",
+    "Maven.KTKT_A11 [org.openjfx:javafx-maven-plugin:0.0.8:run].executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/topto/OneDrive - Vilnius University/Documents/Studijos/3 semestras/Funkcinis programavimas",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\topto\OneDrive - Vilnius University\Documents\Studijos\3 semestras\Kodavimo teorija\A11_Uzduotis\src\main\resources\org\KTKT_A11" />
+      <recent name="C:\Users\topto\OneDrive - Vilnius University\Documents\Studijos\3 semestras\Kodavimo teorija\A11_Uzduotis\src\main\resources\org.KTKT_A11" />
       <recent name="C:\Users\topto\OneDrive - Vilnius University\Documents\Studijos\3 semestras\Kodavimo teorija\A11_Uzduotis\src\main\resources\HomePage" />
       <recent name="C:\Users\topto\OneDrive - Vilnius University\Documents\Studijos\3 semestras\Kodavimo teorija\A11_Uzduotis\src\main\java\Main" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="org.KTKT" />
+      <recent name="org.KTKT_A11" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="org.KTKT.Utils.WindowManager" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -69,7 +104,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1728137924241</updated>
-      <workItem from="1728137925381" duration="4166000" />
+      <workItem from="1728137925381" duration="12714000" />
+      <workItem from="1728199497742" duration="866000" />
+      <workItem from="1728200484518" duration="18000" />
+      <workItem from="1728200510334" duration="52000" />
+      <workItem from="1728200826346" duration="34000" />
+      <workItem from="1728201097592" duration="75000" />
     </task>
     <task id="LOCAL−00001" summary="Created project, added initial Matrix interface file.">
       <option name="closed" value="true" />
@@ -78,7 +118,14 @@
       <option name="presentableId" value="LOCAL−00001" />
       <updated>1728139595030</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL−00002" summary="Implemented basic Matrix functions.">
+      <option name="closed" value="true" />
+      <created>1728146414891</created>
+      <option name="number" value="LOCAL−00002" />
+      <option name="presentableId" value="LOCAL−00002" />
+      <updated>1728146414891</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -86,6 +133,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Created project, added initial Matrix interface file." />
-    <option name="LAST_COMMIT_MESSAGE" value="Created project, added initial Matrix interface file." />
+    <MESSAGE value="Implemented basic Matrix functions." />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented basic Matrix functions." />
   </component>
 </project>
