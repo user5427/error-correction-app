@@ -16,6 +16,6 @@ public interface MatrixInt {
     MatrixInt subtract(MatrixInt other);
     MatrixInt multiply(MatrixInt other);
     MatrixInt transpose(MatrixInt other);
-
+    boolean equals(MatrixInt other);
 
 }

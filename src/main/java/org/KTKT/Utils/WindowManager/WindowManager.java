@@ -63,4 +63,18 @@ public class WindowManager {
 
         stage.show();
     }
+
+    public static void openAlertWindow(MouseEvent event, String resource, Object controller) throws IOException {
+        Stage stage = getStage(resource, controller);
+
+        // Get the current stage
+        Node source = (Node) event.getSource();
+        Stage currentStage = (Stage) source.getScene().getWindow();
+
+        // Set the new stage as modal and set its owner to the current stage
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(currentStage);
+
+        stage.show();
+    }
 }
