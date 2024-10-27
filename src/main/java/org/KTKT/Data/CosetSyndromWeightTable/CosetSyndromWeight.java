@@ -1,24 +1,36 @@
 package org.KTKT.Data.CosetSyndromWeightTable;
 
+import java.util.Arrays;
+
 public class CosetSyndromWeight {
-    private String coset;
-    private String syndrom;
+    private int[] coset;
+    private int[] syndrom;
     private int weight;
+
+    private String stringCosset;
+    private String stringSyndrom;
+    private String stringWeight;
 
     public CosetSyndromWeight() {
     }
 
-    public CosetSyndromWeight(String coset, String syndrom, int weight) {
+    public CosetSyndromWeight(int[] coset, int[] syndrom) {
         this.coset = coset;
         this.syndrom = syndrom;
-        this.weight = weight;
+        int digCount = 0;
+        for (int j : coset) {
+            if (j == 1) {
+                digCount++;
+            }
+        }
+        this.weight = digCount;
     }
 
-    public String getCoset() {
+    public int[] getCoset() {
         return coset;
     }
 
-    public String getSyndrom() {
+    public int[] getSyndrom() {
         return syndrom;
     }
 
@@ -26,16 +38,25 @@ public class CosetSyndromWeight {
         return weight;
     }
 
-    public void setCoset(String coset) {
-        this.coset = coset;
+
+    public String getStringCosset() {
+        StringBuilder stringified = new StringBuilder();
+        for (int i = 0; i < coset.length; i++) {
+            stringified.append(coset[i]);
+        }
+        return stringCosset = stringified.toString();
     }
 
-    public void setSyndrom(String syndrom) {
-        this.syndrom = syndrom;
+    public String getStringSyndrom() {
+        StringBuilder stringified = new StringBuilder();
+        for (int i = 0; i < syndrom.length; i++) {
+            stringified.append(syndrom[i]);
+        }
+        return stringSyndrom = stringified.toString();
     }
 
-    public void setWeight(int weight) {
-        this.weight = weight;
+    public String getStringWeight() {
+        return stringWeight = String.valueOf(weight);
     }
 
 
