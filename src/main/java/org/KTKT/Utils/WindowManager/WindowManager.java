@@ -29,6 +29,28 @@ public class WindowManager {
         return newStage;
     }
 
+    public static void openOverlayWindowWithJoinedCloseAction(MouseEvent event, String resource, Object controller) throws IOException {
+        Stage stage = getStage(resource, controller);
+
+        // Get the current stage
+        Node source = (Node) event.getSource();
+        Stage currentStage = (Stage) source.getScene().getWindow();
+
+        // Set the new stage as modal and set its owner to the current stage
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(currentStage);
+
+        stage.show();
+
+        stage.setOnCloseRequest(e -> {
+            currentStage.close();
+        });
+
+        currentStage.setOnCloseRequest(e -> {
+            stage.close();
+        });
+    }
+
     /**
      * Open a new window. Hide the current window.
      * @param event

@@ -15,7 +15,8 @@ public interface MatrixInt {
     MatrixInt add(MatrixInt other);
     MatrixInt subtract(MatrixInt other);
     MatrixInt multiply(MatrixInt other);
-    MatrixInt transpose(MatrixInt other);
+    MatrixInt transpose();
     boolean equals(MatrixInt other);
 
+    int[] toVector();
 }

@@ -18,6 +18,7 @@ module org.KTKT {
 
 
 
+
     opens org.KTKT to javafx.fxml;
     exports org.KTKT;
 }

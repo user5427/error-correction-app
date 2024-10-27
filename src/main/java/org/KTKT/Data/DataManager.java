@@ -1,7 +1,9 @@
 package org.KTKT.Data;
 
-import org.KTKT.Data.CosetSyndromWeightTable.CosetSyndromWeightTable;
+import org.KTKT.Data.CosetSyndromWeightTable.CosetSyndromWeight;
 import org.KTKT.Data.Matrix.Matrix;
+
+import java.util.List;
 
 import static org.KTKT.Data.DataValidator.MATRIX_NOT_CREATED;
 
@@ -16,32 +18,22 @@ public class DataManager {
     }
 
 
-    int rows_k, columns_n;
-    double probability_p;
+    private int rows_k, columns_n;
 
-    Boolean savedRowsColumnsCount = false;
-    Boolean savedProbability = false;
-    Boolean savedMatrix = false;
+    private Boolean savedRowsColumnsCount = false;
+    private Boolean savedMatrix = false;
 
-    Matrix G_matrix;
-    Matrix A_User_matrix;
-    Matrix H_matrix;
-    CosetSyndromWeightTable cosetSyndromWeightTable;
+    private Matrix G_matrix;
+    private Matrix H_matrix;
+    private List<CosetSyndromWeight> cosetSyndromWeights;
 
-    public DataManager() {
-    }
+    private boolean savedSettings = false;
 
     public void setRowsColumnsCount(int rows_k, int columns_n) {
         savedRowsColumnsCount = false;
         savedRowsColumnsCount = DataValidator.ValidateRowsColumnsCount( rows_k,  columns_n);
         this.rows_k = rows_k;
         this.columns_n = columns_n;
-    }
-
-    public void setProbability(double probability_p) {
-        savedProbability = false;
-        savedProbability = DataValidator.ValidateProbability(probability_p);
-        this.probability_p = probability_p;
     }
 
     public int getColumns_n() {
@@ -58,54 +50,33 @@ public class DataManager {
         this.G_matrix = G_matrix;
     }
 
-    public void resetMatrix() {
+    public void resetDataManager() {
         G_matrix = null;
-        A_User_matrix = null;
         H_matrix = null;
+        savedRowsColumnsCount = false;
+        savedMatrix = false;
+        rows_k = 0;
+        columns_n = 0;
+        cosetSyndromWeights = null;
+        savedSettings = false;
+    }
+
+    public List<CosetSyndromWeight> getCosetSyndromWeights() {
+        return cosetSyndromWeights;
     }
 
     public void generateCleanG_matrix() {
         if (!savedRowsColumnsCount) {
-            throw new IllegalArgumentException("rows_k or columns_n is invalid.");
+            throw new IllegalArgumentException(DataValidator.K_N_INVALID);
         }
-        G_matrix = new Matrix(rows_k, columns_n);
-        // first k * k is
-        // 1 0 0 ...
-        // 0 1 0 ...
-        // 0 0 1 ...
-        // ...
-        for (int i = 0; i < rows_k; i++) {
-            G_matrix.set(i, i, 1);
-        }
-
-        // next k * (n - k) is 0
-        for (int i = 0; i < rows_k; i++) {
-            for (int j = rows_k; j < columns_n; j++) {
-                G_matrix.set(i, j, 0);
-            }
-        }
+        G_matrix = DataCompute.generateCleanG(rows_k, columns_n);
     }
 
     public void generateRandomG_matrix() {
         if (!savedRowsColumnsCount) {
-            throw new IllegalArgumentException("rows_k or columns_n is invalid.");
+            throw new IllegalArgumentException(DataValidator.K_N_INVALID);
         }
-        G_matrix = new Matrix(rows_k, columns_n);
-        // first k * k is
-        // 1 0 0 ...
-        // 0 1 0 ...
-        // 0 0 1 ...
-        // ...
-        for (int i = 0; i < rows_k; i++) {
-            G_matrix.set(i, i, 1);
-        }
-
-        // next k * (n - k) is random
-        for (int i = 0; i < rows_k; i++) {
-            for (int j = rows_k; j < columns_n; j++) {
-                G_matrix.set(i, j, (int) (Math.random() * 2));
-            }
-        }
+        G_matrix = DataCompute.generateRandomG(rows_k, columns_n);
     }
 
     public Matrix getG_matrix() {
@@ -113,48 +84,32 @@ public class DataManager {
     }
 
     public Matrix getH_matrix() {
+        if (H_matrix == null) {
+            throw new IllegalArgumentException(DataValidator.H_MATRIX_NOT_GENERATED);
+        }
         return H_matrix;
     }
 
-    public Matrix getA_User_matrix() {
-        return A_User_matrix;
+    public List<CosetSyndromWeight> getCosetSyndromWeightTable() {
+        if (cosetSyndromWeights == null) {
+            throw new IllegalArgumentException(DataValidator.COSSET_SYNDROM_WEIGHTS_NOT_GENERATED);
+        }
+        return cosetSyndromWeights;
     }
 
-    public void updateA_User_matrix() {
-        A_User_matrix = new Matrix(columns_n - rows_k, columns_n);
-        G_matrix = new Matrix(rows_k, columns_n);
-        for (int i = rows_k; i < columns_n; i++) {
-            for (int j = 0; j < rows_k; j++) {
-                A_User_matrix.set(j, i-rows_k, G_matrix.get(j, i));
-            }
+    public void saveSettings() {
+        if (!savedRowsColumnsCount) {
+            throw new IllegalArgumentException(DataValidator.K_N_INVALID);
         }
-
+        if (!savedMatrix) {
+            throw new IllegalArgumentException(DataValidator.MATRIX_INVALID);
+        }
+        H_matrix = DataCompute.generateH(G_matrix);
+        cosetSyndromWeights = DataCompute.generateCosetSyndromWeightTable(H_matrix);
+        savedSettings = true;
     }
 
-    public void generateFromPreviousG_Matrix() {
-        if (G_matrix == null) {
-            throw new IllegalArgumentException(MATRIX_NOT_CREATED);
-        }
-
-        if (this.previousG_matrix == null) {
-            throw new IllegalArgumentException(DataValidator.PREVIOUS_MATRIX_NOT_FOUND);
-        }
-
-        Matrix previousG_matrix = this.previousG_matrix;
-        generateCleanG_matrix();
-        for (int i = 0; i < rows_k; i++) {
-            for (int j = rows_k; j < columns_n; j++) {
-                if (i < previousG_matrix.getRows() && j < previousG_matrix.getColumns()) {
-                    G_matrix.set(i, j, previousG_matrix.get(i, j));
-                } else {
-                    G_matrix.set(i, j, 0);
-                }
-            }
-        }
-    }
-
-    Matrix previousG_matrix;
-    public void setPreviousG_matrix(Matrix previousG_matrix) {
-        this.previousG_matrix = previousG_matrix;
+    public boolean isSavedSettings() {
+        return savedSettings;
     }
 }

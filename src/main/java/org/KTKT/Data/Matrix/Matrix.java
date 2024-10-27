@@ -1,6 +1,7 @@
 package org.KTKT.Data.Matrix;
 
 public class Matrix implements MatrixInt, Cloneable {
+    private static final int MOD = 2;
     private int[][] matrix;
     private int rows;
     private int columns;
@@ -12,6 +13,13 @@ public class Matrix implements MatrixInt, Cloneable {
         this.rows = rows;
         this.columns = columns;
         matrix = new int[rows][columns];
+    }
+
+    public Matrix(int [] vector) {
+        this.rows = 1;
+        this.columns = vector.length;
+        matrix = new int[1][vector.length];
+        matrix[0] = vector;
     }
 
     public Matrix(int[][] values) {
@@ -113,7 +121,7 @@ public class Matrix implements MatrixInt, Cloneable {
         }
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                matrix[i][j] += other.get(i, j);
+                matrix[i][j] = (matrix[i][j] + other.get(i, j)) % MOD;
             }
         }
         return this;
@@ -126,7 +134,10 @@ public class Matrix implements MatrixInt, Cloneable {
         }
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                matrix[i][j] -= other.get(i, j);
+                matrix[i][j] = (matrix[i][j] - other.get(i, j)) % MOD;
+                if (matrix[i][j] < 0){
+                    matrix[i][j] *= -1;
+                }
             }
         }
         return this;
@@ -151,7 +162,7 @@ public class Matrix implements MatrixInt, Cloneable {
                 int sum = 0;
                 for (int k = 0; k < columns; k++)
                     sum += matrix[i][k] * other.get(k, j);
-                result[i][j] = sum;
+                result[i][j] = sum % MOD;
             }
 
         matrix = result;
@@ -163,11 +174,10 @@ public class Matrix implements MatrixInt, Cloneable {
     /**
      * Transpose the matrix
      * result is this
-     * @param other
      * @return
      */
     @Override
-    public MatrixInt transpose(MatrixInt other) {
+    public MatrixInt transpose() {
         int [][] result = new int[columns][rows];
         for (int i = 0; i < rows; i++)
             for (int j = 0; j < columns; j++) {
@@ -213,6 +223,13 @@ public class Matrix implements MatrixInt, Cloneable {
             sb.append("\n");
         }
         return sb.toString();
+    }
+
+    public int[] toVector() {
+        if (rows != 1) {
+            throw new IllegalArgumentException("Matrix must have only one row");
+        }
+        return matrix[0];
     }
 
     @Override
