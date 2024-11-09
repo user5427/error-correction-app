@@ -22,7 +22,6 @@ public class DataValidator {
     static public String A_MATRIX_NOT_GENERATED = "A matrix not generated";
     static public String COSSET_SYNDROM_WEIGHTS_NOT_GENERATED = "Cosset syndrom weights not generated";
 
-
     static public boolean ValidateRowsColumnsCount(int rowsK, int columnsN) {
         ValidateRows(rowsK);
         ValidateColumns(columnsN);
@@ -121,6 +120,20 @@ public class DataValidator {
                 if (matrix.get(i, j) != 0 && matrix.get(i, j) != 1) {
                     throw new IllegalArgumentException("Matrix elements must be either 0 or 1.");
                 }
+            }
+        }
+        return true;
+    }
+
+    static public final String INVALID_VECTOR_MESSAGE = "Vector is invalid";
+    static public boolean ValidateUserInput (int k, String message, char n) {
+        char[] messageArray = message.toCharArray();
+        if (messageArray.length != k) {
+            throw new IllegalArgumentException("Vector length must be equal to " + n + ".");
+        }
+        for (int i = 0; i < k; i++) {
+            if (messageArray[i] != '0' && messageArray[i] != '1') {
+                throw new IllegalArgumentException("Vector elements must be either 0 or 1.");
             }
         }
         return true;

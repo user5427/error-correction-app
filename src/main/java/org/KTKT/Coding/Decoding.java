@@ -8,6 +8,14 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Decoding {
+
+    public static int[] decodeWithoutReconstruciton (MatrixInt H_matrix, int[] message ) {
+        int k = H_matrix.getColumns() - H_matrix.getRows();
+        int[] result = new int[k];
+        System.arraycopy(message, 0, result, 0, k);
+        return result;
+    }
+
     public static int[] decode(MatrixInt H_matrix, List<CosetSyndromWeight> cosetSyndromWeights, int[] message) throws RuntimeException {
         int[] res = new int[message.length];
         System.arraycopy(message, 0, res, 0, message.length);
@@ -26,6 +34,7 @@ public class Decoding {
             } else {
                 res[changePosition] = (res[changePosition] + 1) % 2;
             }
+            changePosition++;
         };
 
         if (messageSyndromeWeight != 0) {
@@ -47,7 +56,7 @@ public class Decoding {
             }
         }
 
-        return -1;
+        throw new RuntimeException("Syndrome weight not found");
     }
 
 

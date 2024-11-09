@@ -16,6 +16,9 @@ module org.KTKT {
     opens org.KTKT.Utils.WindowManager to javafx.fxml;
     exports org.KTKT.Utils.WindowManager;
 
+    opens org.KTKT.CodingPages to javafx.fxml;
+    exports org.KTKT.CodingPages;
+
 
 
 
