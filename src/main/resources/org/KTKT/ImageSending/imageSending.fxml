@@ -25,9 +25,9 @@
       </Text>
       <Slider fx:id="probabilitySlider" blockIncrement="0.1" layoutX="26.0" layoutY="386.0" max="1.0" onMouseDragged="#probabilitySlider" prefHeight="14.0" prefWidth="200.0" />
       <Text layoutX="14.0" layoutY="376.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(P tikimybė)" />
-      <Circle fx:id="sendC" fill="#ff1f1f" layoutX="178.0" layoutY="309.0" radius="8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-      <Label fx:id="sendLabel" alignment="TOP_LEFT" layoutX="202.0" layoutY="300.0" prefHeight="56.0" prefWidth="72.0" text="Invalid" />
-      <Button layoutX="329.0" layoutY="297.0" mnemonicParsing="false" onMouseClicked="#sendMessage" prefHeight="25.0" prefWidth="117.0" text="Siųsti" />
+      <Circle fx:id="sendC" fill="#ff1f1f" layoutX="350.0" layoutY="310.0" radius="8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+      <Label fx:id="sendLabel" alignment="TOP_LEFT" layoutX="374.0" layoutY="301.0" prefHeight="151.0" prefWidth="72.0" text="Invalid" wrapText="true" />
+      <Button layoutX="203.0" layoutY="297.0" mnemonicParsing="false" onMouseClicked="#sendImage" prefHeight="25.0" prefWidth="117.0" text="Siųsti" />
       <ImageView fitHeight="41.0" fitWidth="43.0" layoutX="467.0" layoutY="119.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../solar_arrow-up-linear.png" />
@@ -45,17 +45,17 @@
          </image>
       </ImageView>
       <Label fx:id="noDecodingLabel" layoutX="529.0" layoutY="301.0" text="Be kodo" />
-      <ImageView fitHeight="227.0" fitWidth="428.0" layoutX="19.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="originalImage" fitHeight="227.0" fitWidth="428.0" layoutX="19.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true">
          <viewport>
             <Rectangle2D />
          </viewport>
       </ImageView>
-      <ImageView fitHeight="227.0" fitWidth="428.0" layoutX="529.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="decodedImage" fitHeight="227.0" fitWidth="428.0" layoutX="529.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true">
          <viewport>
             <Rectangle2D />
          </viewport>
       </ImageView>
-      <ImageView fitHeight="227.0" fitWidth="428.0" layoutX="529.0" layoutY="322.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="noCodeImage" fitHeight="227.0" fitWidth="428.0" layoutX="529.0" layoutY="322.0" pickOnBounds="true" preserveRatio="true">
          <viewport>
             <Rectangle2D />
          </viewport>
