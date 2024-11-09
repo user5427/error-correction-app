@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import org.KTKT.CodingPages.NoParametersPage;
+import org.KTKT.CodingPages.SendTextPage;
 import org.KTKT.CodingPages.SendVectorPage;
 import org.KTKT.Constants.Constants;
 import org.KTKT.Data.DataManager;
@@ -44,6 +45,7 @@ public class HomePageController implements Initializable {
             openOverlayWindow(event, Constants.NO_PARAM_GENERATED, new NoParametersPage());
             return;
         }
+        openWindow(event, Constants.SEND_TEXT_PAGE_FXML, new SendTextPage());
     }
 
     @FXML

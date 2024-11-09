@@ -15,25 +15,64 @@ public class CodingManager {
         return instance;
     }
 
-    public int[] convertStringToBinary(String message) {
-        char[] charArray = message.toCharArray();
-        int[] binaryMessage = new int[charArray.length];
-        for (int i = 0; i < charArray.length; i++) {
-            if (charArray[i] == '0') {
-                binaryMessage[i] = 0;
-            } else if (charArray[i] == '1') {
-                binaryMessage[i] = 1;
-            }
+    public MessageEncodingResult encodeSendDecodeText(String message, float probability) {
+        String binaryStringMessage = TextUtils.textToBinary(message);
+        int[] binaryMessage = TextUtils.convertStringToBinary(binaryStringMessage);
+        int k = DataManager.getInstance().getRows_k();
+        int additionalBits;
+
+        if (binaryMessage.length > k) {
+            additionalBits = binaryMessage.length % k;
+        } else {
+            additionalBits = k - binaryMessage.length;
         }
-        return binaryMessage;
+
+        if (additionalBits != 0) {
+            int[] newBinaryMessage = new int[binaryMessage.length + additionalBits];
+            System.arraycopy(binaryMessage, 0, newBinaryMessage, 0, binaryMessage.length);
+            binaryMessage = newBinaryMessage;
+        }
+
+        // split message into blocks
+        int[][] blocks = new int[binaryMessage.length / k][k];
+        for (int i = 0; i < binaryMessage.length / k; i++) {
+            System.arraycopy(binaryMessage, i * k, blocks[i], 0, k);
+        }
+
+        int[][] resultBlocks = new int[blocks.length][];
+        int[][] noDecodedBlocks = new int[blocks.length][];
+        for (int i = 0; i < blocks.length; i++) {
+            int[] encodedBlock = encodeMessage(blocks[i]);
+            int[] noisedBlock = sendBinaryMessageToChannel(encodedBlock, probability);
+            int[] decodedBlock = decodeMessage(noisedBlock);
+            int[] noDecodedBlock = decodeMessageWithoutReconstruction(noisedBlock);
+            resultBlocks[i] = decodedBlock;
+            noDecodedBlocks[i] = noDecodedBlock;
+        }
+
+        int[] result = getResult(resultBlocks, k, additionalBits);
+        int[] noDecResult = getResult(noDecodedBlocks, k, additionalBits);
+
+        String resultString = TextUtils.convertBinaryToString(result);
+        String noDecString = TextUtils.convertBinaryToString(noDecResult);
+
+        return new MessageEncodingResult(TextUtils.textFromBinary(resultString), TextUtils.textFromBinary(noDecString));
     }
 
-    public String convertBinaryToString(int[] binaryMessage) {
-        StringBuilder sb = new StringBuilder();
-        for (int j : binaryMessage) {
-            sb.append(j);
+    private static int[] getResult(int[][] resultBlocks, int k, int additionalBits) {
+        // convert message to one array
+        int[] result = new int[resultBlocks.length * k];
+        for (int i = 0; i < resultBlocks.length; i++) {
+            System.arraycopy(resultBlocks[i], 0, result, i * k, k);
         }
-        return sb.toString();
+
+        // remove additional bits
+        if (additionalBits != 0) {
+            int[] newResult = new int[result.length - additionalBits];
+            System.arraycopy(result, 0, newResult, 0, newResult.length);
+            result = newResult;
+        }
+        return result;
     }
 
     public int[] sendBinaryMessageToChannel(int[] message, float probability) {

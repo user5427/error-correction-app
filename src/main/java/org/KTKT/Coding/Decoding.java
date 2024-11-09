@@ -9,6 +9,12 @@ import java.util.List;
 
 public class Decoding {
 
+    /**
+     * Does not use the n-k bits to reconstruct the message
+     * @param H_matrix
+     * @param message
+     * @return
+     */
     public static int[] decodeWithoutReconstruciton (MatrixInt H_matrix, int[] message ) {
         int k = H_matrix.getColumns() - H_matrix.getRows();
         int[] result = new int[k];
@@ -16,6 +22,14 @@ public class Decoding {
         return result;
     }
 
+    /**
+     * Decodes the message using the H matrix and the coset syndrom weights
+     * @param H_matrix
+     * @param cosetSyndromWeights
+     * @param message
+     * @return
+     * @throws RuntimeException
+     */
     public static int[] decode(MatrixInt H_matrix, List<CosetSyndromWeight> cosetSyndromWeights, int[] message) throws RuntimeException {
         int[] res = new int[message.length];
         System.arraycopy(message, 0, res, 0, message.length);
@@ -47,6 +61,13 @@ public class Decoding {
         return result;
     }
 
+    /**
+     * Finds the weight of coset for message
+     * @param message
+     * @param H_Matrix
+     * @param cosetSyndromWeights
+     * @return
+     */
     private static int intFindWeightOfCoset(int[] message, MatrixInt H_Matrix, List<CosetSyndromWeight> cosetSyndromWeights){
         var res = new Matrix(H_Matrix).multiply(new Matrix(message).transpose()).transpose().toVector();
         // find same syndrome from list

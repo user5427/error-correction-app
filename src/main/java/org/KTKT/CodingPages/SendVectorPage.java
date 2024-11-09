@@ -12,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import org.KTKT.Coding.CodingManager;
+import org.KTKT.Coding.TextUtils;
 import org.KTKT.Data.DataManager;
 import org.KTKT.Data.DataValidator;
 
@@ -92,9 +93,9 @@ public class SendVectorPage implements Initializable {
         if (!channelInputValid){
             return;
         }
-        int[] binaryVector = CodingManager.getInstance().convertStringToBinary(channelOutput.getText());
+        int[] binaryVector = TextUtils.convertStringToBinary(channelOutput.getText());
         int [] decoded = CodingManager.getInstance().decodeMessage(binaryVector);
-        String myDecodedVector = CodingManager.getInstance().convertBinaryToString(decoded);
+        String myDecodedVector = TextUtils.convertBinaryToString(decoded);
         decodedVector.setText(myDecodedVector);
     }
 
@@ -108,13 +109,13 @@ public class SendVectorPage implements Initializable {
         if (!userInputValid){
             return;
         }
-        int[] binaryVector = CodingManager.getInstance().convertStringToBinary(textField.getText());
+        int[] binaryVector = TextUtils.convertStringToBinary(textField.getText());
         int [] encoded = CodingManager.getInstance().encodeMessage(binaryVector);
-        String decoded = CodingManager.getInstance().convertBinaryToString(encoded);
+        String decoded = TextUtils.convertBinaryToString(encoded);
         encodedVector.setText(decoded);
 
         int [] sendToChannel = CodingManager.getInstance().sendBinaryMessageToChannel(encoded, (float) probabilitySlider.getValue());
-        String noisyVector = CodingManager.getInstance().convertBinaryToString(sendToChannel);
+        String noisyVector = TextUtils.convertBinaryToString(sendToChannel);
         channelOutput.setText(noisyVector);
 
         channelInputValid = true;

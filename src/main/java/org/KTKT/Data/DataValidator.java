@@ -125,6 +125,7 @@ public class DataValidator {
         return true;
     }
 
+    public static final String EMPTY_TEXT = "Text cannot be empty";
     static public final String INVALID_VECTOR_MESSAGE = "Vector is invalid";
     static public boolean ValidateUserInput (int k, String message, char n) {
         char[] messageArray = message.toCharArray();
