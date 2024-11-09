@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="442.0" prefWidth="975.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="157.0" layoutX="529.0" layoutY="61.0" stroke="#dddddd" strokeType="INSIDE" width="428.0" />
+      <Label fx:id="decodedMessage" alignment="TOP_LEFT" layoutX="529.0" layoutY="61.0" prefHeight="157.0" prefWidth="428.0" />
+      <Rectangle arcWidth="5.0" fill="DODGERBLUE" height="32.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="975.0" />
+      <Text fill="WHITE" layoutX="384.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Išsiųsti tekstinę žinutę">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Slider fx:id="probabilitySlider" blockIncrement="0.1" layoutX="26.0" layoutY="286.0" max="1.0" onMouseDragged="#probabilitySlider" prefHeight="14.0" prefWidth="200.0" />
+      <Text layoutX="14.0" layoutY="276.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(P tikimybė)" />
+      <TextArea fx:id="textField" layoutX="17.0" layoutY="61.0" onKeyTyped="#userTextType" prefHeight="157.0" prefWidth="428.0" />
+      <Circle fx:id="sendC" fill="#ff1f1f" layoutX="158.0" layoutY="239.0" radius="8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+      <Label fx:id="sendLabel" alignment="TOP_LEFT" layoutX="182.0" layoutY="230.0" prefHeight="56.0" prefWidth="72.0" text="Invalid" />
+      <Button layoutX="18.0" layoutY="226.0" mnemonicParsing="false" onMouseClicked="#sendMessage" prefHeight="25.0" prefWidth="117.0" text="Siųsti" />
+      <ImageView fitHeight="41.0" fitWidth="43.0" layoutX="467.0" layoutY="119.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../solar_arrow-up-linear.png" />
+         </image>
+      </ImageView>
+      <Text layoutX="18.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vartotojo ivestis" />
+      <Label fx:id="devodedLabel" layoutX="529.0" layoutY="43.0" text="Dekoduota" />
+      <TextField fx:id="probInputField" layoutX="28.0" layoutY="302.0" onKeyTyped="#probChanged" prefHeight="25.0" prefWidth="200.0" />
+      <Label fx:id="probInput" layoutX="232.0" layoutY="306.0" />
+      <Text layoutX="15.0" layoutY="319.0" strokeType="OUTSIDE" strokeWidth="0.0" text="P:" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="157.0" layoutX="529.0" layoutY="262.0" stroke="#dddddd" strokeType="INSIDE" width="428.0" />
+      <ImageView fitHeight="41.0" fitWidth="43.0" layoutX="467.0" layoutY="205.0" pickOnBounds="true" preserveRatio="true" rotate="45.0">
+         <image>
+            <Image url="@../solar_arrow-up-linear.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="noDecodingLabel" layoutX="529.0" layoutY="246.0" text="Be kodo" />
+      <Label fx:id="noDecoding" alignment="TOP_LEFT" layoutX="529.0" layoutY="263.0" prefHeight="157.0" prefWidth="428.0" />
+   </children>
+</AnchorPane>

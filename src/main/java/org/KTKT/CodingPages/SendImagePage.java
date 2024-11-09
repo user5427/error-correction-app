@@ -1,6 +1,7 @@
 package org.KTKT.CodingPages;
 
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
@@ -8,20 +9,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
-import org.KTKT.Coding.CodingManager;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.KTKT.Data.DataValidator;
 
-public class SendTextPage {
-    boolean userInputValid = false;
+import java.io.File;
 
-    @FXML
-    private Label decodedMessage;
-
+public class SendImagePage {
     @FXML
     private Label devodedLabel;
-
-    @FXML
-    private Label noDecoding;
 
     @FXML
     private Label noDecodingLabel;
@@ -42,7 +38,15 @@ public class SendTextPage {
     private Label sendLabel;
 
     @FXML
-    private TextArea textField;
+    void chooseImage(MouseEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.bmp", "*.png", "*.jpg", "*.jpeg"));
+        Node source = (Node) event.getSource();
+        Stage currentStage = (Stage) source.getScene().getWindow();
+        File selectedFile = fileChooser.showOpenDialog(currentStage);
+    }
 
     @FXML
     void probChanged(KeyEvent event) {
@@ -64,35 +68,9 @@ public class SendTextPage {
         probInputField.setText(String.valueOf(probabilitySlider.getValue()));
     }
 
+
     @FXML
     void sendMessage(MouseEvent event) {
 
-        if (!userInputValid) {
-            return;
-        }
-
-        String text = textField.getText();
-        var result = CodingManager.getInstance().ESDText(text, (float) probabilitySlider.getValue());
-        decodedMessage.setText(result.withDecoding);
-        noDecoding.setText(result.withoutDecoding);
-    }
-
-    @FXML
-    void userTextType(KeyEvent event) {
-        String text = textField.getText();
-        try {
-            if (text.isEmpty()) {
-                throw new IllegalArgumentException(DataValidator.EMPTY_TEXT);
-            }
-        } catch (IllegalArgumentException e) {
-            userInputValid = false;
-            sendLabel.setText(e.getMessage());
-            sendC.setStyle("-fx-fill: red");
-            return;
-        }
-
-        userInputValid = true;
-        sendLabel.setText(DataValidator.VALID);
-        sendC.setStyle("-fx-fill: green");
     }
 }

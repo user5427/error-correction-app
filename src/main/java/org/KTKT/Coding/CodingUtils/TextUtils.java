@@ -1,4 +1,4 @@
-package org.KTKT.Coding;
+package org.KTKT.Coding.CodingUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class TextUtils {
         return binary.toString();
     }
 
-    public static int[] convertStringToBinary(String message) {
+    public static int[] convertStringToIntArray(String message) {
         char[] charArray = message.toCharArray();
         int[] binaryMessage = new int[charArray.length];
         for (int i = 0; i < charArray.length; i++) {
@@ -56,7 +56,7 @@ public class TextUtils {
         return binaryMessage;
     }
 
-    public static String convertBinaryToString(int[] binaryMessage) {
+    public static String convertIntArrayToString(int[] binaryMessage) {
         StringBuilder sb = new StringBuilder();
         for (int j : binaryMessage) {
             sb.append(j);

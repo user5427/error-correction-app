@@ -7,4 +7,5 @@ public class Constants {
     public static final String NO_PARAM_GENERATED = "HomePage/parameters-not-generated.fxml";
     public static final String SEND_VECTOR_PAGE_FXML = "VectorSending/vectorSending.fxml";
     public static final String SEND_TEXT_PAGE_FXML = "TextSending/textSending.fxml";
+    public static final String SEND_IMAGE_PAGE_FXML = "ImageSending/imageSending.fxml";
 }

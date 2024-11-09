@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="525.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Rectangle arcHeight="5.0" fill="DODGERBLUE" height="44.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="525.0" />
+      <Text fill="WHITE" layoutX="15.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="KTKT A11 Programa" textAlignment="CENTER" wrappingWidth="494.337890625">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
+      <Button layoutX="14.0" layoutY="64.0" mnemonicParsing="false" onMouseClicked="#setSettings" prefHeight="25.0" prefWidth="193.0" text="Nustatyti parametrus" />
+      <Button layoutX="14.0" layoutY="111.0" mnemonicParsing="false" onMouseClicked="#sendMVector" prefHeight="25.0" prefWidth="193.0" text="Išsiusti m vektoriu" />
+      <Button layoutX="14.0" layoutY="140.0" mnemonicParsing="false" onMouseClicked="#sendText" prefHeight="25.0" prefWidth="193.0" text="Išsiusti tekstine žinutę" />
+      <Button layoutX="14.0" layoutY="169.0" mnemonicParsing="false" onMouseClicked="#sendImage" prefHeight="25.0" prefWidth="193.0" text="Išsiusti paveikslėlį" />
+      <Button layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onMouseClicked="#showProgramInfo" prefHeight="25.0" prefWidth="193.0" text="Ataskaita" />
+   </children>
+</AnchorPane>

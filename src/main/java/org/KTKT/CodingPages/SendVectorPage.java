@@ -7,12 +7,11 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import org.KTKT.Coding.CodingManager;
-import org.KTKT.Coding.TextUtils;
+import org.KTKT.Coding.CodingUtils.TextUtils;
 import org.KTKT.Data.DataManager;
 import org.KTKT.Data.DataValidator;
 
@@ -93,9 +92,9 @@ public class SendVectorPage implements Initializable {
         if (!channelInputValid){
             return;
         }
-        int[] binaryVector = TextUtils.convertStringToBinary(channelOutput.getText());
+        int[] binaryVector = TextUtils.convertStringToIntArray(channelOutput.getText());
         int [] decoded = CodingManager.getInstance().decodeMessage(binaryVector);
-        String myDecodedVector = TextUtils.convertBinaryToString(decoded);
+        String myDecodedVector = TextUtils.convertIntArrayToString(decoded);
         decodedVector.setText(myDecodedVector);
     }
 
@@ -109,13 +108,13 @@ public class SendVectorPage implements Initializable {
         if (!userInputValid){
             return;
         }
-        int[] binaryVector = TextUtils.convertStringToBinary(textField.getText());
+        int[] binaryVector = TextUtils.convertStringToIntArray(textField.getText());
         int [] encoded = CodingManager.getInstance().encodeMessage(binaryVector);
-        String decoded = TextUtils.convertBinaryToString(encoded);
+        String decoded = TextUtils.convertIntArrayToString(encoded);
         encodedVector.setText(decoded);
 
         int [] sendToChannel = CodingManager.getInstance().sendBinaryMessageToChannel(encoded, (float) probabilitySlider.getValue());
-        String noisyVector = TextUtils.convertBinaryToString(sendToChannel);
+        String noisyVector = TextUtils.convertIntArrayToString(sendToChannel);
         channelOutput.setText(noisyVector);
 
         channelInputValid = true;

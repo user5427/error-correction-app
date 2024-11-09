@@ -1,9 +1,16 @@
 package org.KTKT.Coding;
 
+import org.KTKT.Coding.CodingUtils.*;
+import org.KTKT.Coding.ESDResultRecords.ImageESDResult;
+import org.KTKT.Coding.ESDResultRecords.MessageESDResult;
 import org.KTKT.Data.CosetSyndromWeightTable.CosetSyndromWeight;
 import org.KTKT.Data.DataManager;
 import org.KTKT.Data.Matrix.Matrix;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class CodingManager {
@@ -15,9 +22,28 @@ public class CodingManager {
         return instance;
     }
 
-    public MessageEncodingResult encodeSendDecodeText(String message, float probability) {
+    public MessageESDResult ESDText(String message, float probability) {
         String binaryStringMessage = TextUtils.textToBinary(message);
-        int[] binaryMessage = TextUtils.convertStringToBinary(binaryStringMessage);
+        int[] binaryMessage = TextUtils.convertStringToIntArray(binaryStringMessage);
+        ESDBinaryRecord results = encodeSendDecodeBinary(probability, binaryMessage);
+
+        String resultString = TextUtils.convertIntArrayToString(results.result());
+        String noDecString = TextUtils.convertIntArrayToString(results.noDecResult());
+
+        return new MessageESDResult(TextUtils.textFromBinary(resultString), TextUtils.textFromBinary(noDecString));
+    }
+
+    public ImageESDResult ESDImage(File imageFile, float probability) throws IOException {
+        BufferedImage originalImage = ImageIO.read(imageFile);
+        int[] binaryImage = ImageUtils.convertImageToIntArray(originalImage);
+        ESDBinaryRecord results = encodeSendDecodeBinary(probability, binaryImage);
+
+        BufferedImage processedImage = ImageUtils.convertIntArrayToImage(results.result(), originalImage.getWidth(), originalImage.getHeight());
+        BufferedImage noCodeImage = ImageUtils.convertIntArrayToImage(results.noDecResult(), originalImage.getWidth(), originalImage.getHeight());
+        return new ImageESDResult(noCodeImage, processedImage);
+    }
+
+    private ESDBinaryRecord encodeSendDecodeBinary(float probability, int[] binaryMessage) {
         int k = DataManager.getInstance().getRows_k();
         int additionalBits;
 
@@ -52,11 +78,11 @@ public class CodingManager {
 
         int[] result = getResult(resultBlocks, k, additionalBits);
         int[] noDecResult = getResult(noDecodedBlocks, k, additionalBits);
+        ESDBinaryRecord results = new ESDBinaryRecord(result, noDecResult);
+        return results;
+    }
 
-        String resultString = TextUtils.convertBinaryToString(result);
-        String noDecString = TextUtils.convertBinaryToString(noDecResult);
-
-        return new MessageEncodingResult(TextUtils.textFromBinary(resultString), TextUtils.textFromBinary(noDecString));
+    private record ESDBinaryRecord(int[] result, int[] noDecResult) {
     }
 
     private static int[] getResult(int[][] resultBlocks, int k, int additionalBits) {

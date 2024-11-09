@@ -1,10 +1,10 @@
-package org.KTKT.Coding;
+package org.KTKT.Coding.ESDResultRecords;
 
-public class MessageEncodingResult {
+public class MessageESDResult {
     public String withDecoding;
     public String withoutDecoding;
 
-    public MessageEncodingResult(String s, String s1) {
+    public MessageESDResult(String s, String s1) {
         withDecoding = s;
         withoutDecoding = s1;
     }
