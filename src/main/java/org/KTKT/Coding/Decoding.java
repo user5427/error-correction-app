@@ -10,7 +10,8 @@ import java.util.List;
 public class Decoding {
 
     /**
-     * Does not use the n-k bits to reconstruct the message
+     * Does not use the n-k bits to reconstruct the message.
+     * In other words, it does not use the x*A part from (x|x*A)
      * @param H_matrix
      * @param message
      * @return

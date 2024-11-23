@@ -3,40 +3,39 @@ package org.KTKT.Coding.CodingUtils;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+/**
+ * ImageUtils class contains methods for converting images to int[] arrays and other way.
+ * All binary representations use int[] arrays. This is because matrix operations are done using int[] arrays.
+ */
 public class ImageUtils {
 
-    // Convert .BMP image to int[] array of 0 and 1. Do not include the header of the image.
+    /**
+     * Converts image to int[] array of 0 and 1. Does not include the header of the image.
+     * @param image
+     * @return int[] array of 0 and 1
+     */
     public static int[] convertImageToIntArray(BufferedImage image) {
         int[] tempRes = new int[image.getWidth() * image.getHeight() * 3];
         int index = 0;
         for (int y = 0; y < image.getHeight(); y++) {
             for (int x = 0; x < image.getWidth(); x++) {
                 Color color = new Color(image.getRGB(x, y));
-                byte red = (byte) color.getRed();
-                byte green = (byte) color.getGreen();
-                byte blue = (byte) color.getBlue();
-
-                tempRes[index++] = red;
-                tempRes[index++] = green;
-                tempRes[index++] = blue;
+                tempRes[index++] = color.getRed();
+                tempRes[index++] = color.getGreen();
+                tempRes[index++] = color.getBlue();
             }
         }
 
-        StringBuilder binaryString = new StringBuilder();
-        for (int b : tempRes) {
-            String binary = String.format("%8s", Integer.toBinaryString(b & 0xFF)).replace(' ', '0');
-            binaryString.append(binary);
-        }
-
-
-        int[] result = new int[binaryString.length()];
-        for (int i = 0; i < binaryString.length(); i++) {
-            result[i] = binaryString.charAt(i) == '0' ? 0 : 1;
-        }
-
-        return result;
+        return BinaryUtils.convertNumberArrayToBinaryRepresentation(tempRes);
     }
 
+    /**
+     * Converts int[] array of 0 and 1 to BufferedImage
+     * @param array
+     * @param width
+     * @param height
+     * @return
+     */
     public static BufferedImage convertIntArrayToImage(int[] array, int width, int height) {
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         int index = 0;
@@ -55,22 +54,13 @@ public class ImageUtils {
                 for (int i = 0; i < 8; i++) {
                     blueBits[i] = array[index++];
                 }
-                int red = convertBitsToByte(redBits);
-                int green = convertBitsToByte(greenBits);
-                int blue = convertBitsToByte(blueBits);
+                int red = BinaryUtils.convertBitsToNumber(redBits);
+                int green = BinaryUtils.convertBitsToNumber(greenBits);
+                int blue = BinaryUtils.convertBitsToNumber(blueBits);
                 Color color = new Color(red, green, blue);
                 image.setRGB(x, y, color.getRGB());
             }
         }
         return image;
-    }
-
-    private static int convertBitsToByte(int[] redBits) {
-        int result = 0;
-        for (int i = 0; i < 8; i++) {
-            result |= ((redBits[i] & 1) << (7 - i));  // Shift each bit to its correct position
-        }
-
-        return result;
     }
 }
