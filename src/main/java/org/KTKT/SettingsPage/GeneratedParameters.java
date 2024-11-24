@@ -9,6 +9,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import org.KTKT.Constants.ErrorConstants;
 import org.KTKT.Data.CosetSyndromWeightTable.CosetSyndromWeight;
 import org.KTKT.Data.DataManager;
 import org.KTKT.Data.DataValidator;
@@ -51,7 +52,7 @@ public class GeneratedParameters implements Initializable {
             Closet_Table.getItems().addAll(cosets);
         } catch (Exception e) {
 //            throw e;
-            statusLabel.setText(DataValidator.ERROR + e.getMessage());
+            statusLabel.setText(ErrorConstants.ERROR + e.getMessage());
         }
     }
 

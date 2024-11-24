@@ -1,8 +1,11 @@
 package org.KTKT.CodingPages;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -21,8 +24,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class SendImagePage {
+public class SendImagePage implements ESDStatus, Initializable {
     File selectedFile = null;
 
     @FXML
@@ -54,6 +59,9 @@ public class SendImagePage {
 
     @FXML
     private ImageView originalImage;
+
+    @FXML
+    private ProgressBar progressBar;
 
     @FXML
     void chooseImage(MouseEvent event) {
@@ -104,24 +112,20 @@ public class SendImagePage {
             return;
         }
 
-        ImageESDResult result = null;
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        stage.setOnCloseRequest(e -> CodingManager.stopESD());
+
         try {
-            result = CodingManager.getInstance().ESDImage(selectedFile, (float) probabilitySlider.getValue());
+            CodingManager.getInstance().ESDImage(selectedFile, (float) probabilitySlider.getValue(), this);
         } catch (Exception e) {
             sendLabel.setText(e.getMessage());
             sendC.setStyle("-fx-fill: red");
             return;
         }
 
-        sendLabel.setText("Image sent successfully.");
-        sendC.setStyle("-fx-fill: green");
-
-        if (result != null) {
-            Image decImage = convertToFxImage(result.decodedImage());
-            decodedImage.setImage(decImage);
-            Image noCode = convertToFxImage(result.noCodeImage());
-            noCodeImage.setImage(noCode);
-        }
+        sendLabel.setText("Sending image.");
+        sendC.setStyle("-fx-fill: yellow");
 
 
     }
@@ -139,5 +143,31 @@ public class SendImagePage {
         }
 
         return new ImageView(wr).getImage();
+    }
+
+    public void  receiveResult(ImageESDResult res) {
+        Platform.runLater(() -> {
+            Image decImage = convertToFxImage(res.decodedImage());
+            decodedImage.setImage(decImage);
+            Image noCode = convertToFxImage(res.noCodeImage());
+            noCodeImage.setImage(noCode);
+
+            sendLabel.setText("Image sent.");
+            sendC.setStyle("-fx-fill: green");
+        });
+    }
+
+    @Override
+    public void setESDStatus(Double status) {
+        Platform.runLater(() -> updateProgressBar(status));
+    }
+
+    private void updateProgressBar(Double status) {
+        progressBar.setProgress(status);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
     }
 }

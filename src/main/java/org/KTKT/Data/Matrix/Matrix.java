@@ -1,5 +1,7 @@
 package org.KTKT.Data.Matrix;
 
+import org.KTKT.Constants.ErrorConstants;
+
 public class Matrix implements MatrixInt, Cloneable {
     private static final int MOD = 2;
     private int[][] matrix;
@@ -8,7 +10,7 @@ public class Matrix implements MatrixInt, Cloneable {
 
     public Matrix(int rows, int columns) {
         if (rows <= 0 || columns <= 0) {
-            throw new IllegalArgumentException("Invalid number of rows or columns");
+            throw new IllegalArgumentException(ErrorConstants.INVALID_ROWS_COLUMNS_COUNT);
         }
         this.rows = rows;
         this.columns = columns;
@@ -24,7 +26,7 @@ public class Matrix implements MatrixInt, Cloneable {
 
     public Matrix(int[][] values) {
         if (values.length == 0 || values[0].length == 0) {
-            throw new IllegalArgumentException("Invalid number of rows or columns");
+            throw new IllegalArgumentException(ErrorConstants.INVALID_ROWS_COLUMNS_COUNT);
         }
         rows = values.length;
         columns = values[0].length;
@@ -50,7 +52,7 @@ public class Matrix implements MatrixInt, Cloneable {
     @Override
     public int get(int row, int column) {
         if (row < 0 || row >= rows || column < 0 || column >= columns) {
-            throw new IllegalArgumentException("Invalid row or column index");
+            throw new IllegalArgumentException(ErrorConstants.INVALID_ROW_COLUMNS_INDEX);
         }
             return matrix[row][column];
     }
@@ -58,7 +60,7 @@ public class Matrix implements MatrixInt, Cloneable {
     @Override
     public void set(int row, int column, int value) {
         if (row < 0 || row >= rows || column < 0 || column >= columns) {
-            throw new IllegalArgumentException("Invalid row or column index");
+            throw new IllegalArgumentException(ErrorConstants.INVALID_ROW_COLUMNS_INDEX);
         }
             matrix[row][column] = value;
     }
@@ -66,7 +68,7 @@ public class Matrix implements MatrixInt, Cloneable {
     @Override
     public void setRow(int row, int[] values) {
         if (row < 0 || row >= rows || values.length != columns) {
-            throw new IllegalArgumentException("Invalid row index or number of values");
+            throw new IllegalArgumentException(ErrorConstants.INVALID_ROW_INDEX_OR_VALUES_COUNT);
         }
             matrix[row] = values;
     }
@@ -74,7 +76,7 @@ public class Matrix implements MatrixInt, Cloneable {
     @Override
     public void setColumn(int column, int[] values) {
         if (column < 0 || column >= columns || values.length != rows) {
-            throw new IllegalArgumentException("Invalid column index or number of values");
+            throw new IllegalArgumentException(ErrorConstants.INVALID_COLUMN_INDEX_OR_VALUES_COUNT);
         }
             for (int i = 0; i < rows; i++) {
                 matrix[i][column] = values[i];
@@ -84,7 +86,7 @@ public class Matrix implements MatrixInt, Cloneable {
     @Override
     public int[] getRow(int row) {
         if (row < 0 || row >= rows) {
-            throw new IllegalArgumentException("Invalid row index");
+            throw new IllegalArgumentException(ErrorConstants.INVALID_ROW_INDEX);
         }
             return matrix[row];
     }
@@ -92,7 +94,7 @@ public class Matrix implements MatrixInt, Cloneable {
     @Override
     public int[] getColumn(int column) {
         if (column < 0 || column >= columns) {
-            throw new IllegalArgumentException("Invalid column index");
+            throw new IllegalArgumentException(ErrorConstants.INVALID_COLUMN_INDEX);
         }
             int[] values = new int[rows];
             for (int i = 0; i < rows; i++) {
@@ -104,7 +106,7 @@ public class Matrix implements MatrixInt, Cloneable {
     @Override
     public void setAll(int[][] values) {
         if (values.length != rows || values[0].length != columns) {
-            throw new IllegalArgumentException("Invalid number of rows or columns");
+            throw new IllegalArgumentException(ErrorConstants.INVALID_ROWS_COLUMNS_COUNT);
         }
         matrix = values;
     }
@@ -117,7 +119,7 @@ public class Matrix implements MatrixInt, Cloneable {
     @Override
     public MatrixInt add(MatrixInt other) {
         if (other.getRows() != rows || other.getColumns() != columns) {
-            throw new IllegalArgumentException("Matrices must have the same dimensions");
+            throw new IllegalArgumentException(ErrorConstants.SAME_DIMENSIONS_REQUIRED);
         }
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -130,7 +132,7 @@ public class Matrix implements MatrixInt, Cloneable {
     @Override
     public MatrixInt subtract(MatrixInt other) {
         if (other.getRows() != rows || other.getColumns() != columns) {
-            throw new IllegalArgumentException("Matrices must have the same dimensions");
+            throw new IllegalArgumentException(ErrorConstants.SAME_DIMENSIONS_REQUIRED);
         }
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -152,7 +154,7 @@ public class Matrix implements MatrixInt, Cloneable {
     @Override
     public MatrixInt multiply(MatrixInt other) {
         if (columns != other.getRows()) {
-            throw new IllegalArgumentException("Invalid matrix dimensions");
+            throw new IllegalArgumentException(ErrorConstants.INVALID_MATRIX_DIMENSIONS);
         }
 
         int[][] result = new int[rows][other.getColumns()];
@@ -227,7 +229,7 @@ public class Matrix implements MatrixInt, Cloneable {
 
     public int[] toVector() {
         if (rows != 1) {
-            throw new IllegalArgumentException("Matrix must have only one row");
+            throw new IllegalArgumentException(ErrorConstants.ONLY_ONE_ROW);
         }
         return matrix[0];
     }

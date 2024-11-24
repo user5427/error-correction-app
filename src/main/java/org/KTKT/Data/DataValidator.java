@@ -6,22 +6,6 @@ public class DataValidator {
     private static final int KNLimit = 50;
     private static final int KNDIFFERENCE_LIMIT = 10;
 
-    static public String K_N_INVALID = "k and n are invalid";
-    static public String K_INVALID = "k is invalid";
-    static public String N_INVALID = "n is invalid";
-    static public String P_INVALID = "p is invalid";
-    static public String PROBABILITY_INVALID = "probability is invalid";
-    static public String MATRIX_INVALID = "matrix is invalid";
-    static public String MATRIX_DIMENSIONS_INVALID = "matrix dimensions are invalid. (do not match k or n)";
-    static public String MATRIX_NOT_CREATED = "matrix is not created";
-    static public String INVALID_NUMBER = "invalid number";
-    static public String VALID = "valid";
-    static public String ERROR = "Error: ";
-    static public String PREVIOUS_MATRIX_NOT_FOUND = "Previous matrix not found";
-    static public String H_MATRIX_NOT_GENERATED = "H matrix not generated";
-    static public String A_MATRIX_NOT_GENERATED = "A matrix not generated";
-    static public String COSSET_SYNDROM_WEIGHTS_NOT_GENERATED = "Cosset syndrom weights not generated";
-
     static public boolean ValidateRowsColumnsCount(int rowsK, int columnsN) {
         ValidateRows(rowsK);
         ValidateColumns(columnsN);
@@ -125,8 +109,6 @@ public class DataValidator {
         return true;
     }
 
-    public static final String EMPTY_TEXT = "Text cannot be empty";
-    static public final String INVALID_VECTOR_MESSAGE = "Vector is invalid";
     static public boolean ValidateUserInput (int k, String message, char n) {
         char[] messageArray = message.toCharArray();
         if (messageArray.length != k) {

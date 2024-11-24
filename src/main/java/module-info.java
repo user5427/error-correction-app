@@ -21,7 +21,8 @@ module org.KTKT {
     exports org.KTKT.CodingPages;
 
 
-
+    opens org.KTKT.Coding.Errors to javafx.fxml;
+    exports org.KTKT.Coding.Errors;
 
     opens org.KTKT to javafx.fxml;
     exports org.KTKT;

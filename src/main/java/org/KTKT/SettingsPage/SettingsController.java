@@ -1,7 +1,7 @@
 package org.KTKT.SettingsPage;
 
 import javafx.fxml.FXML;
-import javafx.scene.Node;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
@@ -10,18 +10,21 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
-import org.KTKT.Constants.Constants;
+import org.KTKT.Constants.ErrorConstants;
+import org.KTKT.Constants.FileConstants;
 import org.KTKT.Data.DataManager;
 import org.KTKT.Data.DataValidator;
 import org.KTKT.Data.Matrix.Matrix;
 import org.KTKT.Utils.WindowManager.WindowManager;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
-public class SettingsController {
+public class SettingsController implements Initializable {
     private int rows_k = 0, columns_n = 0;
     private boolean k_error = true, n_error = true;
     private boolean matrix_error = true;
@@ -78,13 +81,13 @@ public class SettingsController {
             DataValidator.ValidateRowsColumnsCount(rows_k, columns_n);
             if (checkIfMatrixChanged() && checkIfMatrixExists()){
                 CancelNewMatrix window = new CancelNewMatrix(this, matrixUpdateStatus);
-                WindowManager.openAlertWindow(event, Constants.CHANGE_MATRIX_FXML, window);
+                WindowManager.openAlertWindow(event, FileConstants.CHANGE_MATRIX_FXML, window);
             }
             else {
                 generateMatrix(matrixUpdateStatus);
             }
         } catch (Exception e){
-            MatrixInputErrorLabel.setText(DataValidator.ERROR + e.getMessage());
+            MatrixInputErrorLabel.setText(ErrorConstants.ERROR + e.getMessage());
         }
     }
 
@@ -187,7 +190,7 @@ public class SettingsController {
         invalidTextFields.clear();
 
         matrixStatus.setFill(Color.YELLOW);
-        matrixStatusLabel.setText(DataValidator.VALID);
+        matrixStatusLabel.setText(ErrorConstants.VALID);
 
         for (int i = 0; i < DataManager.getInstance().getRows_k(); i++) {
             for (int j = 0; j < DataManager.getInstance().getColumns_n(); j++) {
@@ -204,14 +207,14 @@ public class SettingsController {
                         try {
                             int num = Integer.parseInt(newValue);
                             if (num != 0 && num != 1){
-                                throw new NumberFormatException(DataValidator.INVALID_NUMBER);
+                                throw new NumberFormatException(ErrorConstants.INVALID_NUMBER);
                             }
 
                             textField.setStyle("-fx-text-fill: black;");
                             invalidTextFields.remove(textField);
                             if (invalidTextFields.isEmpty()){
                                 matrixStatus.setFill(Color.YELLOW);
-                                matrixStatusLabel.setText(DataValidator.VALID);
+                                matrixStatusLabel.setText(ErrorConstants.VALID);
                             }
                         } catch (NumberFormatException e){
                             textField.setStyle("-fx-text-fill: red;");
@@ -219,7 +222,7 @@ public class SettingsController {
                                 invalidTextFields.remove(textField);
                             }
                             matrixStatus.setFill(Color.RED);
-                            matrixStatusLabel.setText(DataValidator.MATRIX_INVALID);
+                            matrixStatusLabel.setText(ErrorConstants.MATRIX_INVALID);
                         }
                     });
 
@@ -290,13 +293,13 @@ public class SettingsController {
         StringBuilder error = new StringBuilder();
         saveErrorLabel.setText("");
             if (k_error && n_error)
-                error.append(DataValidator.K_N_INVALID);
+                error.append(ErrorConstants.K_N_INVALID);
             else if (k_error)
-                error.append(DataValidator.K_INVALID);
+                error.append(ErrorConstants.K_INVALID);
             else if (n_error)
-                error.append(DataValidator.N_INVALID);
+                error.append(ErrorConstants.N_INVALID);
             if (matrix_error)
-                error.append(DataValidator.MATRIX_INVALID);
+                error.append(ErrorConstants.MATRIX_INVALID);
 
         if (!error.isEmpty()){
             saveErrorLabel.setText(error.toString());
@@ -305,7 +308,7 @@ public class SettingsController {
                 DataManager.getInstance().saveSettings();
 
                 GeneratedParameters generatedParameters = new GeneratedParameters();
-                WindowManager.openOverlayWindow(event, Constants.GENERATED_SETTINGS, generatedParameters);
+                WindowManager.openOverlayWindow(event, FileConstants.GENERATED_SETTINGS, generatedParameters);
             } catch (IOException e) {
 //                throw e;
                 saveErrorLabel.setText("Error: " + e.getMessage());
@@ -319,13 +322,13 @@ public class SettingsController {
         try {
             numberInputErrorLabel.setText("");
             if (k_error && n_error){
-                throw new NumberFormatException(DataValidator.K_N_INVALID);
+                throw new NumberFormatException(ErrorConstants.K_N_INVALID);
             }
             if (k_error){
-                throw new NumberFormatException(DataValidator.K_INVALID);
+                throw new NumberFormatException(ErrorConstants.K_INVALID);
             }
             if (n_error){
-                throw new NumberFormatException(DataValidator.N_INVALID);
+                throw new NumberFormatException(ErrorConstants.N_INVALID);
             }
             DataManager.getInstance().setRowsColumnsCount(rows_k, columns_n);
             nStatus.setFill(Color.GREEN);
@@ -351,11 +354,11 @@ public class SettingsController {
         try {
             MatrixInputErrorLabel.setText("");
             if (!checkIfMatrixExists()){
-                throw new IllegalArgumentException(DataValidator.MATRIX_NOT_CREATED);
+                throw new IllegalArgumentException(ErrorConstants.MATRIX_NOT_CREATED);
             }
 
             if (!checkIfMatrixDimmensionsValid()){
-                throw new IllegalArgumentException(DataValidator.MATRIX_DIMENSIONS_INVALID);
+                throw new IllegalArgumentException(ErrorConstants.MATRIX_DIMENSIONS_INVALID);
             }
 
             if (checkIfGridValid() && checkIfMatrixDimmensionsValid()){
@@ -363,7 +366,7 @@ public class SettingsController {
                 DataManager.getInstance().setG_matrix(getMatrixFromGrid());
                 setMatrixValidation(true);
             } else {
-                throw new IllegalArgumentException(DataValidator.MATRIX_INVALID);
+                throw new IllegalArgumentException(ErrorConstants.MATRIX_INVALID);
             }
             return true;
         } catch (Exception e){
@@ -390,5 +393,19 @@ public class SettingsController {
         matrixStatus.setFill(Color.YELLOW);
         matrixStatusLabel.setText("Not saved");
         matrix_error = true;
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        if (DataManager.getInstance().isSavedSettings()){
+            rows_k = DataManager.getInstance().getRows_k();
+            columns_n = DataManager.getInstance().getColumns_n();
+            k_input.setText(String.valueOf(rows_k));
+            n_input.setText(String.valueOf(columns_n));
+            setKValidation(true);
+            setNValidation(true);
+            setMatrixValidation(true);
+            updateGrid();
+        }
     }
 }

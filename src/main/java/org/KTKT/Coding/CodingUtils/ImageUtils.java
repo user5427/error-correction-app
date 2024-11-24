@@ -26,7 +26,7 @@ public class ImageUtils {
             }
         }
 
-        return BinaryUtils.convertNumberArrayToBinaryRepresentation(tempRes);
+        return BinaryUtils.convertNumberArrayToBinary(tempRes);
     }
 
     /**

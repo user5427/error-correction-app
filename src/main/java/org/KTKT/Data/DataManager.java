@@ -1,11 +1,11 @@
 package org.KTKT.Data;
 
+import org.KTKT.Constants.ErrorConstants;
 import org.KTKT.Data.CosetSyndromWeightTable.CosetSyndromWeight;
 import org.KTKT.Data.Matrix.Matrix;
 
 import java.util.List;
 
-import static org.KTKT.Data.DataValidator.MATRIX_NOT_CREATED;
 
 public class DataManager {
     private static DataManager instance = null;
@@ -67,14 +67,14 @@ public class DataManager {
 
     public void generateCleanG_matrix() {
         if (!savedRowsColumnsCount) {
-            throw new IllegalArgumentException(DataValidator.K_N_INVALID);
+            throw new IllegalArgumentException(ErrorConstants.K_N_INVALID);
         }
         G_matrix = DataCompute.generateCleanG(rows_k, columns_n);
     }
 
     public void generateRandomG_matrix() {
         if (!savedRowsColumnsCount) {
-            throw new IllegalArgumentException(DataValidator.K_N_INVALID);
+            throw new IllegalArgumentException(ErrorConstants.K_N_INVALID);
         }
         G_matrix = DataCompute.generateRandomG(rows_k, columns_n);
     }
@@ -85,24 +85,24 @@ public class DataManager {
 
     public Matrix getH_matrix() {
         if (H_matrix == null) {
-            throw new IllegalArgumentException(DataValidator.H_MATRIX_NOT_GENERATED);
+            throw new IllegalArgumentException(ErrorConstants.H_MATRIX_NOT_GENERATED);
         }
         return H_matrix;
     }
 
     public List<CosetSyndromWeight> getCosetSyndromWeightTable() {
         if (cosetSyndromWeights == null) {
-            throw new IllegalArgumentException(DataValidator.COSSET_SYNDROM_WEIGHTS_NOT_GENERATED);
+            throw new IllegalArgumentException(ErrorConstants.COSSET_SYNDROM_WEIGHTS_NOT_GENERATED);
         }
         return cosetSyndromWeights;
     }
 
     public void saveSettings() {
         if (!savedRowsColumnsCount) {
-            throw new IllegalArgumentException(DataValidator.K_N_INVALID);
+            throw new IllegalArgumentException(ErrorConstants.K_N_INVALID);
         }
         if (!savedMatrix) {
-            throw new IllegalArgumentException(DataValidator.MATRIX_INVALID);
+            throw new IllegalArgumentException(ErrorConstants.MATRIX_INVALID);
         }
         H_matrix = DataCompute.generateH(G_matrix);
         cosetSyndromWeights = DataCompute.generateCosetSyndromWeightTable(H_matrix);

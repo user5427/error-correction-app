@@ -1,17 +1,17 @@
 package org.KTKT.CodingPages;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import org.KTKT.Coding.CodingManager;
+import org.KTKT.Coding.ESDResultRecords.MessageESDResult;
+import org.KTKT.Constants.ErrorConstants;
 import org.KTKT.Data.DataValidator;
 
-public class SendTextPage {
+public class SendTextPage implements ESDStatus {
     boolean userInputValid = false;
 
     @FXML
@@ -45,6 +45,9 @@ public class SendTextPage {
     private TextArea textField;
 
     @FXML
+    private ProgressBar progressBar;
+
+    @FXML
     void probChanged(KeyEvent event) {
         try {
             DataValidator.ValidateProbability(probInputField.getText());
@@ -72,9 +75,10 @@ public class SendTextPage {
         }
 
         String text = textField.getText();
-        var result = CodingManager.getInstance().ESDText(text, (float) probabilitySlider.getValue());
-        decodedMessage.setText(result.withDecoding);
-        noDecoding.setText(result.withoutDecoding);
+        CodingManager.getInstance().ESDText(text, (float) probabilitySlider.getValue(), this);
+
+        sendC.setStyle("-fx-fill: yellow");
+        sendLabel.setText("Sending message.");
     }
 
     @FXML
@@ -82,7 +86,7 @@ public class SendTextPage {
         String text = textField.getText();
         try {
             if (text.isEmpty()) {
-                throw new IllegalArgumentException(DataValidator.EMPTY_TEXT);
+                throw new IllegalArgumentException(ErrorConstants.EMPTY_TEXT);
             }
         } catch (IllegalArgumentException e) {
             userInputValid = false;
@@ -92,7 +96,26 @@ public class SendTextPage {
         }
 
         userInputValid = true;
-        sendLabel.setText(DataValidator.VALID);
+        sendLabel.setText(ErrorConstants.VALID);
         sendC.setStyle("-fx-fill: green");
+    }
+
+    @Override
+    public void setESDStatus(Double status) {
+        Platform.runLater(() -> updateProgressBar(status));
+
+    }
+
+    private void updateProgressBar(Double status) {
+        progressBar.setProgress(status);
+    }
+
+    public void receiveResult(MessageESDResult result) {
+        Platform.runLater(() -> {
+            decodedMessage.setText(result.withDecoding);
+            noDecoding.setText(result.withoutDecoding);
+            sendC.setStyle("-fx-fill: green");
+            sendLabel.setText("Message sent.");
+        });
     }
 }
