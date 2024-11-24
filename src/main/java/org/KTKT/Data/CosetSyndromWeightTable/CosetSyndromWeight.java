@@ -14,6 +14,11 @@ public class CosetSyndromWeight {
     public CosetSyndromWeight() {
     }
 
+    /**
+     * Constructor
+     * @param coset
+     * @param syndrom
+     */
     public CosetSyndromWeight(int[] coset, int[] syndrom) {
         this.coset = coset;
         this.syndrom = syndrom;

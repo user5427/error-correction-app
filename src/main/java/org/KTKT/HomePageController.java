@@ -20,6 +20,11 @@ import static org.KTKT.Utils.WindowManager.WindowManager.openOverlayWindow;
 import static org.KTKT.Utils.WindowManager.WindowManager.openWindow;
 
 public class HomePageController implements Initializable {
+    /**
+     * Open the image sending page.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void sendImage(MouseEvent event) throws IOException {
         if (!DataManager.getInstance().isSavedSettings()){
@@ -29,6 +34,11 @@ public class HomePageController implements Initializable {
         openWindow(event, FileConstants.SEND_IMAGE_PAGE_FXML, new SendImagePage());
     }
 
+    /**
+     * Open the vector sending page.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void sendMVector(MouseEvent event) throws IOException {
         if (!DataManager.getInstance().isSavedSettings()){
@@ -38,6 +48,11 @@ public class HomePageController implements Initializable {
         openWindow(event, FileConstants.SEND_VECTOR_PAGE_FXML, new SendVectorPage());
     }
 
+    /**
+     * Open the text sending page.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void sendText(MouseEvent event) throws IOException {
         if (!DataManager.getInstance().isSavedSettings()){
@@ -47,6 +62,11 @@ public class HomePageController implements Initializable {
         openWindow(event, FileConstants.SEND_TEXT_PAGE_FXML, new SendTextPage());
     }
 
+    /**
+     * Open the settings page.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void setSettings(MouseEvent event) throws IOException {
         openWindow(event, FileConstants.SETTINGS_PAGE_FXML, new SettingsController());

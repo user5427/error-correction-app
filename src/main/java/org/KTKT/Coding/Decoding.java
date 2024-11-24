@@ -1,5 +1,6 @@
 package org.KTKT.Coding;
 
+import org.KTKT.Constants.ErrorConstants;
 import org.KTKT.Data.CosetSyndromWeightTable.CosetSyndromWeight;
 import org.KTKT.Data.Matrix.Matrix;
 import org.KTKT.Data.Matrix.MatrixInt;
@@ -37,7 +38,7 @@ public class Decoding {
 
         int messageSyndromeWeight = intFindWeightOfCoset(res, H_matrix, cosetSyndromWeights);
         if (messageSyndromeWeight == -1) {
-            throw new RuntimeException("Message syndrome weight not found");
+            throw new RuntimeException(ErrorConstants.MESSAGE_SYNDROME_WEIGHT_NOT_FOUND);
         }
 
         int changePosition = 0;
@@ -53,7 +54,7 @@ public class Decoding {
         };
 
         if (messageSyndromeWeight != 0) {
-            throw new RuntimeException("Message syndrome with weight 0 not found");
+            throw new RuntimeException(ErrorConstants.SYNDROME_WEIGHT_ZERO_NOT_FOUND);
         }
 
         int k = H_matrix.getColumns() - H_matrix.getRows();
@@ -78,7 +79,7 @@ public class Decoding {
             }
         }
 
-        throw new RuntimeException("Syndrome weight not found");
+        throw new RuntimeException(ErrorConstants.SYNDROME_WEIGHT_NOT_FOUND);
     }
 
 

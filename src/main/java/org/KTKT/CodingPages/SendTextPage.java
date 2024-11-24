@@ -47,6 +47,10 @@ public class SendTextPage implements ESDStatus {
     @FXML
     private ProgressBar progressBar;
 
+    /**
+     * Changes probability when input field is changed
+     * @param event
+     */
     @FXML
     void probChanged(KeyEvent event) {
         try {
@@ -62,11 +66,19 @@ public class SendTextPage implements ESDStatus {
         probInput.setText("");
     }
 
+    /**
+     * Changes probability when slider is changed
+     * @param event
+     */
     @FXML
     void probabilitySlider(MouseEvent event) {
         probInputField.setText(String.valueOf(probabilitySlider.getValue()));
     }
 
+    /**
+     * Sends message to ESD
+     * @param event
+     */
     @FXML
     void sendMessage(MouseEvent event) {
 
@@ -81,6 +93,10 @@ public class SendTextPage implements ESDStatus {
         sendLabel.setText("Sending message.");
     }
 
+    /**
+     * Validates user input
+     * @param event
+     */
     @FXML
     void userTextType(KeyEvent event) {
         String text = textField.getText();
@@ -100,16 +116,28 @@ public class SendTextPage implements ESDStatus {
         sendC.setStyle("-fx-fill: green");
     }
 
+    /**
+     * Sets ESD status
+     * @param status
+     */
     @Override
     public void setESDStatus(Double status) {
         Platform.runLater(() -> updateProgressBar(status));
 
     }
 
+    /**
+     * Updates progress bar
+     * @param status
+     */
     private void updateProgressBar(Double status) {
         progressBar.setProgress(status);
     }
 
+    /**
+     * Receives result from ESD
+     * @param result
+     */
     public void receiveResult(MessageESDResult result) {
         Platform.runLater(() -> {
             decodedMessage.setText(result.withDecoding);

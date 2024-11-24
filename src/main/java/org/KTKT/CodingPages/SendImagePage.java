@@ -63,6 +63,10 @@ public class SendImagePage implements ESDStatus, Initializable {
     @FXML
     private ProgressBar progressBar;
 
+    /**
+     * Choose image from file system
+     * @param event
+     */
     @FXML
     void chooseImage(MouseEvent event) {
         FileChooser fileChooser = new FileChooser();
@@ -83,6 +87,10 @@ public class SendImagePage implements ESDStatus, Initializable {
         }
     }
 
+    /**
+     * Validate probability input
+     * @param event
+     */
     @FXML
     void probChanged(KeyEvent event) {
         try {
@@ -98,12 +106,19 @@ public class SendImagePage implements ESDStatus, Initializable {
         probInput.setText("");
     }
 
+    /**
+     * Update probability slider
+     * @param event
+     */
     @FXML
     void probabilitySlider(MouseEvent event) {
         probInputField.setText(String.valueOf(probabilitySlider.getValue()));
     }
 
-
+    /**
+     * Send image to ESD
+     * @param event
+     */
     @FXML
     void sendImage(MouseEvent event) {
         if (selectedFile == null) {
@@ -130,6 +145,11 @@ public class SendImagePage implements ESDStatus, Initializable {
 
     }
 
+    /**
+     * Convert BufferedImage to Image
+     * @param image
+     * @return
+     */
     private static Image convertToFxImage(BufferedImage image) {
         WritableImage wr = null;
         if (image != null) {
@@ -145,6 +165,10 @@ public class SendImagePage implements ESDStatus, Initializable {
         return new ImageView(wr).getImage();
     }
 
+    /**
+     * Receive result from ESD
+     * @param res
+     */
     public void  receiveResult(ImageESDResult res) {
         Platform.runLater(() -> {
             Image decImage = convertToFxImage(res.decodedImage());
@@ -157,15 +181,33 @@ public class SendImagePage implements ESDStatus, Initializable {
         });
     }
 
+    /**
+     * Update ESD status
+     * @param status
+     */
     @Override
     public void setESDStatus(Double status) {
         Platform.runLater(() -> updateProgressBar(status));
     }
 
+    /**
+     * Update progress bar
+     * @param status
+     */
     private void updateProgressBar(Double status) {
         progressBar.setProgress(status);
     }
 
+    /**
+     * Initialize the controller
+     * @param location
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param resources
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 

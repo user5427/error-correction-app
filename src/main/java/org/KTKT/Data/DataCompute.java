@@ -12,6 +12,12 @@ import static org.KTKT.Data.SeamlessWeightVectors.SeamlessWeightVectors.generate
 
 public class DataCompute {
 
+    /**
+     * Generates clean G matrix
+     * @param rows_k
+     * @param columns_n
+     * @return
+     */
     public static Matrix generateCleanG(int rows_k, int columns_n) {
         Matrix G_matrix = new Matrix(rows_k, columns_n);
         // first k * k is
@@ -33,6 +39,12 @@ public class DataCompute {
         return G_matrix;
     }
 
+    /**
+     * Generates random G matrix
+     * @param rows_k
+     * @param columns_n
+     * @return
+     */
     public static Matrix generateRandomG(int rows_k, int columns_n) {
         Matrix G_matrix = new Matrix(rows_k, columns_n);
         // first k * k is
@@ -54,10 +66,18 @@ public class DataCompute {
         return G_matrix;
     }
 
+    /**
+     * Generates H matrix
+     * @param G_matrix
+     * @return
+     */
     public static Matrix generateH(Matrix G_matrix) {
         int rows_k = G_matrix.getRows();
         int columns_n = G_matrix.getColumns();
         Matrix A_User_matrix = new Matrix(rows_k, columns_n - rows_k);
+        /**
+         * Get the last n - k columns from G matrix
+         */
         for (int i = rows_k; i < columns_n; i++) {
             for (int j = 0; j < rows_k; j++) {
                 A_User_matrix.set(j, i-rows_k, G_matrix.get(j, i));
@@ -85,6 +105,11 @@ public class DataCompute {
         return H_matrix;
     }
 
+    /**
+     * Generates coset syndrom weight table
+     * @param H_matrix
+     * @return
+     */
     public static List<CosetSyndromWeight> generateCosetSyndromWeightTable(Matrix H_matrix) {
         int k = H_matrix.getColumns() - H_matrix.getRows();
         int n = H_matrix.getColumns();

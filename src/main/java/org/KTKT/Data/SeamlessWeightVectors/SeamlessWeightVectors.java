@@ -1,10 +1,17 @@
 package org.KTKT.Data.SeamlessWeightVectors;
 
+import org.KTKT.Constants.ErrorConstants;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class SeamlessWeightVectors {
 
+    /**
+     * Map all non zero values to ... 5, 4, 3, 2, 1, 0, 0, ... based on their position
+     * @param vector
+     * @return
+     */
     private static int[] mapToSeamlessWeightVector(int[] vector) {
         int[] myVector = new int[vector.length];
         System.arraycopy(vector, 0, myVector, 0, vector.length);
@@ -13,14 +20,14 @@ public class SeamlessWeightVectors {
         for (int i = 0; i < myVector.length; i++) {
             if (myVector[i] != 0) {
                 if (myVector[i] != 1) {
-                    throw new IllegalArgumentException("Vector must contain only 0 and 1");
+                    throw new IllegalArgumentException(ErrorConstants.VECTOR_CONTAINS_ONLY_ZERO_ONE);
                 }
                 nonZeroCount++;
             }
         }
 
         if (nonZeroCount == 0) {
-            throw new IllegalArgumentException("Vector must contain at least one 1");
+            throw new IllegalArgumentException(ErrorConstants.VECTOR_CONTAINS_ATLEAST_ONE_ONE);
         }
 
         for (int i = 0; i < myVector.length; i++) {
@@ -33,6 +40,12 @@ public class SeamlessWeightVectors {
         return myVector;
     }
 
+    /**
+     * Map all non zero values to 1
+     * Map all zero values to 0
+     * @param vector
+     * @return
+     */
     private static int[] mapToBinaryVector(int[] vector) {
         int[] binaryVector = new int[vector.length];
         for (int i = 0; i < vector.length; i++) {
@@ -60,9 +73,14 @@ public class SeamlessWeightVectors {
         * if there are no digits at position k-n+1 then increment n = 1 if possible
      */
 
+    /**
+     * Generate next vector based on the current vector and its weight
+     * @param vector
+     * @return
+     */
     public static int[] generateSeamlessWeightVector(int[] vector) {
         if (vector.length < 2) {
-            throw new IllegalArgumentException("Vector length must be at least 2");
+            throw new IllegalArgumentException(ErrorConstants.VECTOR_LENGTH_ATLEAST_TWO);
         }
 
         int[] myVector = mapToSeamlessWeightVector(vector);
@@ -132,7 +150,7 @@ public class SeamlessWeightVectors {
         }
 
         if (!changed) {
-            throw new IllegalArgumentException("Vector is already at maximum");
+            throw new IllegalArgumentException(ErrorConstants.VECTOR_AT_MAXIMUM);
         }
 
         return mapToBinaryVector(myVector);

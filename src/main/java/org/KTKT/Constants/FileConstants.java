@@ -1,5 +1,8 @@
 package org.KTKT.Constants;
 
+/**
+ * Constants for file paths
+ */
 public class FileConstants {
     public static final String SETTINGS_PAGE_FXML = "Settings/settings-page.fxml";
     public static final String CHANGE_MATRIX_FXML = "Settings/change-matrix-window.fxml";

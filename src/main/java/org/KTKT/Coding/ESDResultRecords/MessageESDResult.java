@@ -1,5 +1,8 @@
 package org.KTKT.Coding.ESDResultRecords;
 
+/**
+ * Used for passing data to the UI
+ */
 public class MessageESDResult {
     public String withDecoding;
     public String withoutDecoding;

@@ -8,6 +8,11 @@ public class Matrix implements MatrixInt, Cloneable {
     private int rows;
     private int columns;
 
+    /**
+     * Generate matrix with given size
+     * @param rows
+     * @param columns
+     */
     public Matrix(int rows, int columns) {
         if (rows <= 0 || columns <= 0) {
             throw new IllegalArgumentException(ErrorConstants.INVALID_ROWS_COLUMNS_COUNT);
@@ -17,6 +22,10 @@ public class Matrix implements MatrixInt, Cloneable {
         matrix = new int[rows][columns];
     }
 
+    /**
+     * Generate matrix with given vector
+     * @param vector
+     */
     public Matrix(int [] vector) {
         this.rows = 1;
         this.columns = vector.length;
@@ -24,6 +33,10 @@ public class Matrix implements MatrixInt, Cloneable {
         matrix[0] = vector;
     }
 
+    /**
+     * Generate matrix with given values
+     * @param values
+     */
     public Matrix(int[][] values) {
         if (values.length == 0 || values[0].length == 0) {
             throw new IllegalArgumentException(ErrorConstants.INVALID_ROWS_COLUMNS_COUNT);
@@ -33,6 +46,10 @@ public class Matrix implements MatrixInt, Cloneable {
         matrix = values;
     }
 
+    /**
+     * Copy constructor
+     * @param other
+     */
     public Matrix(MatrixInt other) {
         rows = other.getRows();
         columns = other.getColumns();
@@ -49,6 +66,12 @@ public class Matrix implements MatrixInt, Cloneable {
         return columns;
     }
 
+    /**
+     * Get value from matrix
+     * @param row
+     * @param column
+     * @return
+     */
     @Override
     public int get(int row, int column) {
         if (row < 0 || row >= rows || column < 0 || column >= columns) {
@@ -57,6 +80,12 @@ public class Matrix implements MatrixInt, Cloneable {
             return matrix[row][column];
     }
 
+    /**
+     * Set value in matrix
+     * @param row
+     * @param column
+     * @param value
+     */
     @Override
     public void set(int row, int column, int value) {
         if (row < 0 || row >= rows || column < 0 || column >= columns) {
@@ -65,6 +94,11 @@ public class Matrix implements MatrixInt, Cloneable {
             matrix[row][column] = value;
     }
 
+    /**
+     * Set row in matrix
+     * @param row
+     * @param values
+     */
     @Override
     public void setRow(int row, int[] values) {
         if (row < 0 || row >= rows || values.length != columns) {
@@ -73,6 +107,11 @@ public class Matrix implements MatrixInt, Cloneable {
             matrix[row] = values;
     }
 
+    /**
+     * Set column in matrix
+     * @param column
+     * @param values
+     */
     @Override
     public void setColumn(int column, int[] values) {
         if (column < 0 || column >= columns || values.length != rows) {
@@ -83,6 +122,11 @@ public class Matrix implements MatrixInt, Cloneable {
             }
     }
 
+    /**
+     * Get row from matrix
+     * @param row
+     * @return
+     */
     @Override
     public int[] getRow(int row) {
         if (row < 0 || row >= rows) {
@@ -91,6 +135,11 @@ public class Matrix implements MatrixInt, Cloneable {
             return matrix[row];
     }
 
+    /**
+     * Get column from matrix
+     * @param column
+     * @return
+     */
     @Override
     public int[] getColumn(int column) {
         if (column < 0 || column >= columns) {
@@ -103,6 +152,10 @@ public class Matrix implements MatrixInt, Cloneable {
             return values;
     }
 
+    /**
+     * Set all values in matrix
+     * @param values
+     */
     @Override
     public void setAll(int[][] values) {
         if (values.length != rows || values[0].length != columns) {
@@ -111,11 +164,20 @@ public class Matrix implements MatrixInt, Cloneable {
         matrix = values;
     }
 
+    /**
+     * Get all values from matrix
+     * @return
+     */
     @Override
     public int[][] getAll() {
         return matrix;
     }
 
+    /**
+     * Add two matrices
+     * @param other
+     * @return
+     */
     @Override
     public MatrixInt add(MatrixInt other) {
         if (other.getRows() != rows || other.getColumns() != columns) {
@@ -129,6 +191,11 @@ public class Matrix implements MatrixInt, Cloneable {
         return this;
     }
 
+    /**
+     * Subtract two matrices
+     * @param other
+     * @return
+     */
     @Override
     public MatrixInt subtract(MatrixInt other) {
         if (other.getRows() != rows || other.getColumns() != columns) {
@@ -192,6 +259,11 @@ public class Matrix implements MatrixInt, Cloneable {
         return this;
     }
 
+    /**
+     * Check if two matrices are equal
+     * @param other
+     * @return
+     */
     @Override
     public boolean equals(MatrixInt other) {
         if (rows != other.getRows() || columns != other.getColumns()) {
@@ -207,6 +279,9 @@ public class Matrix implements MatrixInt, Cloneable {
         return true;
     }
 
+    /**
+     * Print matrix
+     */
     public void printMatrix() {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -216,6 +291,10 @@ public class Matrix implements MatrixInt, Cloneable {
         }
     }
 
+    /**
+     * Convert matrix to string
+     * @return
+     */
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < rows; i++) {
@@ -227,6 +306,10 @@ public class Matrix implements MatrixInt, Cloneable {
         return sb.toString();
     }
 
+    /**
+     * Convert matrix to vector if it has only one row
+     * @return
+     */
     public int[] toVector() {
         if (rows != 1) {
             throw new IllegalArgumentException(ErrorConstants.ONLY_ONE_ROW);

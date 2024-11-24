@@ -10,6 +10,10 @@ import java.util.List;
 public class DataManager {
     private static DataManager instance = null;
 
+    /**
+     * Singleton
+     * @return
+     */
     public static DataManager getInstance() {
         if (instance == null) {
             instance = new DataManager();
@@ -65,6 +69,10 @@ public class DataManager {
         return cosetSyndromWeights;
     }
 
+    /**
+     * Generate clean G matrix
+     * Used by UI
+     */
     public void generateCleanG_matrix() {
         if (!savedRowsColumnsCount) {
             throw new IllegalArgumentException(ErrorConstants.K_N_INVALID);
@@ -72,6 +80,10 @@ public class DataManager {
         G_matrix = DataCompute.generateCleanG(rows_k, columns_n);
     }
 
+    /**
+     * Generate random G matrix
+     * Used by UI
+     */
     public void generateRandomG_matrix() {
         if (!savedRowsColumnsCount) {
             throw new IllegalArgumentException(ErrorConstants.K_N_INVALID);
@@ -97,6 +109,10 @@ public class DataManager {
         return cosetSyndromWeights;
     }
 
+    /**
+     * Save settings
+     * Used by UI
+     */
     public void saveSettings() {
         if (!savedRowsColumnsCount) {
             throw new IllegalArgumentException(ErrorConstants.K_N_INVALID);

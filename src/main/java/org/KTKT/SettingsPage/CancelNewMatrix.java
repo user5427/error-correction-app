@@ -5,6 +5,9 @@ import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+/**
+ * Popup for asking if user wants to create a new matrix and overwrite the old one
+ */
 public class CancelNewMatrix {
     SettingsController settingsController;
     MatrixUpdateStatus matrixUpdateStatus;

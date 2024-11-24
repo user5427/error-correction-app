@@ -1,5 +1,8 @@
 package org.KTKT.Data.Matrix;
 
+/**
+ * Interface for integer matrix
+ */
 public interface MatrixInt {
     int getRows();
     int getColumns();

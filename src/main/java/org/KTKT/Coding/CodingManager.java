@@ -18,6 +18,11 @@ import java.util.List;
 
 public class CodingManager {
     private static CodingManager instance = null;
+
+    /**
+     * Singleton
+     * @return
+     */
     public static CodingManager getInstance() {
         if (instance == null) {
             instance = new CodingManager();
@@ -25,6 +30,12 @@ public class CodingManager {
         return instance;
     }
 
+    /**
+     * Encodes, sends and decodes the text
+     * @param message
+     * @param probability
+     * @param textPageController
+     */
     public void ESDText(String message, float probability, SendTextPage textPageController) {
         new Thread(() -> {
             if (!ESDactive && FinishedExecuting) {
@@ -48,16 +59,31 @@ public class CodingManager {
         }).start();
     }
 
+    /**
+     * Used for stopping the ESD process from UI
+     */
     public static void stopESD() {
         ESDactive = false;
     }
 
+    /**
+     * Used for checking if ESD is active
+     * @return
+     */
     public static boolean isESDactive() {
         return ESDactive;
     }
 
     private static boolean ESDactive = false;
     private static boolean FinishedExecuting = true;
+
+    /**
+     * Encodes, sends and decodes the image
+     * @param imageFile
+     * @param probability
+     * @param imagePageController
+     * @throws IOException
+     */
     public void ESDImage(File imageFile, float probability, SendImagePage imagePageController) throws IOException {
         new Thread(() -> {
             if (!ESDactive && FinishedExecuting) {
@@ -154,6 +180,11 @@ public class CodingManager {
         return results;
     }
 
+    /**
+     * Record for the ESD result
+     * @param result
+     * @param noDecResult
+     */
     private record ESDBinaryRecord(int[] result, int[] noDecResult) {
     }
 

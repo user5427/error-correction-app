@@ -66,16 +66,29 @@ public class SettingsController implements Initializable {
     @FXML
     private Label matrixStatusLabel;
 
+    /**
+     * Generate random G matrix
+     * @param event
+     */
     @FXML
     void generate_random_G_matrix(MouseEvent event) {
         updateMatrix(MatrixUpdateStatus.RANDOM, event);
     }
 
+    /**
+     * Generate clean G matrix
+     * @param event
+     */
     @FXML
     void createMatrix(MouseEvent event) {
         updateMatrix(MatrixUpdateStatus.CLEAN, event);
     }
 
+    /**
+     * Generate random, clean matrix or cancel
+     * @param matrixUpdateStatus
+     * @param event
+     */
     private void updateMatrix(MatrixUpdateStatus matrixUpdateStatus, MouseEvent event){
         try {
             DataValidator.ValidateRowsColumnsCount(rows_k, columns_n);
@@ -91,16 +104,28 @@ public class SettingsController implements Initializable {
         }
     }
 
+    /**
+     * Check if matrix exists
+     * @return
+     */
     private boolean checkIfMatrixExists(){
         return DataManager.getInstance().getG_matrix() != null;
     }
 
+    /**
+     * Check if matrix dimmensions are valid
+     * @return
+     */
     private boolean checkIfMatrixDimmensionsValid(){
         if (!checkIfMatrixExists())
             return false;
         return G_Grid.getChildren().size() == DataManager.getInstance().getRows_k() * DataManager.getInstance().getColumns_n();
     }
 
+    /**
+     * Check if grid is valid
+     * @return
+     */
     private boolean checkIfGridValid(){
         for (int i = 0; i < G_Grid.getRowCount(); i++) {
             for (int j = G_Grid.getRowCount(); j < G_Grid.getColumnCount(); j++) {
@@ -116,6 +141,11 @@ public class SettingsController implements Initializable {
         return true;
     }
 
+    /**
+     * Check if matrix changed (the user inputted matrix is different from saved matrix)
+     * @return
+     * @throws NumberFormatException
+     */
     private boolean checkIfMatrixChanged() throws NumberFormatException{
         if (!checkIfGridValid() || !checkIfMatrixDimmensionsValid()){
             return true;
@@ -128,6 +158,11 @@ public class SettingsController implements Initializable {
         return true;
     }
 
+    /**
+     * Get matrix from grid (user input)
+     * @return
+     * @throws NumberFormatException
+     */
     private Matrix getMatrixFromGrid() throws NumberFormatException {
         Matrix matrix = new Matrix(DataManager.getInstance().getRows_k(), DataManager.getInstance().getColumns_n());
         if (G_Grid.getChildren().size() != DataManager.getInstance().getRows_k() * DataManager.getInstance().getColumns_n()){
@@ -150,6 +185,10 @@ public class SettingsController implements Initializable {
         return matrix;
     }
 
+    /**
+     * Generate matrix status
+     * @param matrixUpdateStatus
+     */
     public void generateMatrix(MatrixUpdateStatus matrixUpdateStatus){
         if (matrixUpdateStatus == MatrixUpdateStatus.CANCEL){
             return;
@@ -160,6 +199,9 @@ public class SettingsController implements Initializable {
         }
     }
 
+    /**
+     * Generate random matrix
+     */
     private void generateRandomMatrix() {
         try {
             MatrixInputErrorLabel.setText("");
@@ -170,6 +212,9 @@ public class SettingsController implements Initializable {
         }
     }
 
+    /**
+     * Generate clean matrix
+     */
     private void generateCleanMatrix() {
         try{
             MatrixInputErrorLabel.setText("");
@@ -180,6 +225,9 @@ public class SettingsController implements Initializable {
         }
     }
 
+    /**
+     * Update the matrix displayed in UI
+     */
     private void updateGrid(){
         G_Grid.getChildren().clear();
         G_Grid.setHgap(5);
@@ -232,6 +280,10 @@ public class SettingsController implements Initializable {
         }
     }
 
+    /**
+     * Check if k is valid
+     * @param event
+     */
     @FXML
     void k_changed(KeyEvent event) {
         try {
@@ -249,6 +301,10 @@ public class SettingsController implements Initializable {
         }
     }
 
+    /**
+     * Check if n is valid
+     * @param event
+     */
     @FXML
     void n_changed(KeyEvent event) {
         try {
@@ -266,6 +322,10 @@ public class SettingsController implements Initializable {
         }
     }
 
+    /**
+     * Set k validation status
+     * @param valid
+     */
     private void setKValidation(boolean valid) {
         this.k_error = !valid;
         if (k_error) {
@@ -277,6 +337,10 @@ public class SettingsController implements Initializable {
         }
     }
 
+    /**
+     * Set n validation status
+     * @param valid
+     */
     private void setNValidation(boolean valid) {
         this.n_error = !valid;
         if (n_error) {
@@ -288,6 +352,11 @@ public class SettingsController implements Initializable {
         }
     }
 
+    /**
+     * Save all parameters
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void save_settings(MouseEvent event) throws IOException {
         StringBuilder error = new StringBuilder();
@@ -316,6 +385,10 @@ public class SettingsController implements Initializable {
         }
     }
 
+    /**
+     * Save variables k and n
+     * @param event
+     */
     @FXML
     void saveVariables(MouseEvent event) {
         StringBuilder error = new StringBuilder();
@@ -350,6 +423,10 @@ public class SettingsController implements Initializable {
         MySaveMatrix();
     }
 
+    /**
+     * Check if matrix is valid and save it
+     * @return
+     */
     boolean MySaveMatrix(){
         try {
             MatrixInputErrorLabel.setText("");
@@ -377,7 +454,10 @@ public class SettingsController implements Initializable {
     }
 
 
-
+    /**
+     * Set matrix validation status
+     * @param valid
+     */
     private void setMatrixValidation(boolean valid){
         this.matrix_error = !valid;
         if (matrix_error){
@@ -389,12 +469,25 @@ public class SettingsController implements Initializable {
         }
     }
 
+    /**
+     * Set matrix not validated
+     */
     private void setMatrixNotValidated(){
         matrixStatus.setFill(Color.YELLOW);
         matrixStatusLabel.setText("Not saved");
         matrix_error = true;
     }
 
+    /**
+     * Initialize settings page
+     * @param location
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param resources
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         if (DataManager.getInstance().isSavedSettings()){

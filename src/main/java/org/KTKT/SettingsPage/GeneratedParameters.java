@@ -56,6 +56,11 @@ public class GeneratedParameters implements Initializable {
         }
     }
 
+    /**
+     * Updates grid
+     * Show H matrix
+     * @param H_Matrix
+     */
     private void updateGrid(Matrix H_Matrix) {
         H_Grid.getChildren().clear();
         H_Grid.setHgap(5);
