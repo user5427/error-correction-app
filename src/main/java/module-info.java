@@ -2,6 +2,7 @@ module org.KTKT {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.desktop;
+    requires org.fxmisc.richtext;
 
 
     opens org.KTKT.Data.Matrix to javafx.fxml;

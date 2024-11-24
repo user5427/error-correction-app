@@ -36,7 +36,7 @@
       </ImageView>
       <Text layoutX="18.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vartotojo ivestis" />
       <Label fx:id="devodedLabel" layoutX="529.0" layoutY="43.0" text="Dekoduota" />
-      <TextField fx:id="probInputField" layoutX="28.0" layoutY="402.0" onKeyTyped="#probChanged" prefHeight="25.0" prefWidth="200.0" />
+      <TextField fx:id="probInputField" layoutX="28.0" layoutY="402.0" onKeyTyped="#probChanged" prefHeight="25.0" prefWidth="200.0" text="0" />
       <Label fx:id="probInput" layoutX="232.0" layoutY="406.0" />
       <Text layoutX="15.0" layoutY="419.0" strokeType="OUTSIDE" strokeWidth="0.0" text="P:" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="227.0" layoutX="529.0" layoutY="322.0" stroke="#dddddd" strokeType="INSIDE" width="428.0" />

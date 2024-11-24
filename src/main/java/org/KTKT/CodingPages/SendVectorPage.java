@@ -6,10 +6,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import org.KTKT.Application;
 import org.KTKT.Coding.CodingManager;
 import org.KTKT.Coding.CodingUtils.BinaryUtils;
 import org.KTKT.Coding.Errors.ErrorPosition;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import org.fxmisc.richtext.StyleClassedTextArea;
 
 public class SendVectorPage implements Initializable {
 
@@ -32,7 +35,9 @@ public class SendVectorPage implements Initializable {
     private String userInput;
 
     @FXML
-    private TextArea channelOutput;
+    private VBox textAreaContainer;
+
+    private StyleClassedTextArea channelOutput;
 
     @FXML
     private Circle decodeC;
@@ -157,12 +162,21 @@ public class SendVectorPage implements Initializable {
         }
         int[] binaryVector = BinaryUtils.convertBinaryStringToIntArray(textField.getText());
         int [] encoded = CodingManager.getInstance().encodeMessage(binaryVector);
-        String decoded = BinaryUtils.convertIntArrayToBinaryString(encoded);
-        encodedVector.setText(decoded);
+        String converted = BinaryUtils.convertIntArrayToBinaryString(encoded);
+        encodedVector.setText(converted);
 
         int [] sendToChannel = CodingManager.getInstance().sendBinaryMessageToChannel(encoded, (float) probabilitySlider.getValue());
         String noisyVector = BinaryUtils.convertIntArrayToBinaryString(sendToChannel);
-        channelOutput.setText(noisyVector);
+        channelOutput.clear();
+        for (int i = 0; i < noisyVector.length(); i++) {
+            if (converted.charAt(i) != noisyVector.charAt(i)){
+
+                channelOutput.append(Character.toString(noisyVector.charAt(i)), "red-text");
+            } else {
+                channelOutput.append(Character.toString(noisyVector.charAt(i)), "green-text");
+            }
+        }
+
 
         channelInputValid = true;
         decodeLabel.setText(ErrorConstants.VALID);
@@ -174,7 +188,7 @@ public class SendVectorPage implements Initializable {
 
 
         // find all the error positions and save these positions to table
-        var errors = FindErrors(decoded, noisyVector);
+        var errors = FindErrors(converted, noisyVector);
         errorPositions.getItems().clear();
         errorPositions.getItems().addAll(errors);
 
@@ -242,6 +256,17 @@ public class SendVectorPage implements Initializable {
 
             errorCount.setText("Klaidos: " + errors.size());
         }
+
+        String noisyVector = encodedVector.getText();
+        String converted = channelOutput.getText();
+        for (int i = 0; i < noisyVector.length(); i++) {
+            if (converted.charAt(i) != noisyVector.charAt(i)){
+
+                channelOutput.setStyle(i, i + 1, List.of("red-text"));
+            } else {
+                channelOutput.setStyle(i, i + 1, List.of("green-text"));
+            }
+        }
     }
 
     /**
@@ -260,5 +285,16 @@ public class SendVectorPage implements Initializable {
         encodedLenght.setText("n: " + (DataManager.getInstance().getColumns_n()));
 
         errors.setCellValueFactory(new PropertyValueFactory<ErrorPosition, Integer>("position"));
+
+        channelOutput = new StyleClassedTextArea();
+        channelOutput.setPrefWidth(200);
+        channelOutput.setPrefHeight(157);
+
+        channelOutput.setWrapText(true);
+
+        channelOutput.getStylesheets().add(Objects.requireNonNull(Application.class.getResource("style.css")).toExternalForm());
+        channelOutput.setOnKeyTyped(this::channelTextType);
+
+        textAreaContainer.getChildren().add(channelOutput);
     }
 }

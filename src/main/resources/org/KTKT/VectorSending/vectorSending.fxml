@@ -10,6 +10,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -30,7 +31,7 @@
       <Text layoutX="451.0" layoutY="379.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(P tikimybė)" />
       <TextArea fx:id="textField" layoutX="17.0" layoutY="61.0" onKeyTyped="#userTextType" prefHeight="157.0" prefWidth="200.0" />
       <Circle fx:id="sendC" fill="#ff1f1f" layoutX="158.0" layoutY="239.0" radius="8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-      <Label fx:id="sendLabel" alignment="TOP_LEFT" layoutX="182.0" layoutY="230.0" prefHeight="56.0" prefWidth="72.0" text="Invalid" />
+      <Label fx:id="sendLabel" alignment="TOP_LEFT" layoutX="182.0" layoutY="230.0" prefHeight="64.0" prefWidth="72.0" text="Invalid" wrapText="true" />
       <Button layoutX="18.0" layoutY="226.0" mnemonicParsing="false" onMouseClicked="#sendVector" prefHeight="25.0" prefWidth="117.0" text="Siųsti" />
       <Label fx:id="messageLength" layoutX="117.0" layoutY="43.0" prefHeight="17.0" prefWidth="99.0" />
       <Label fx:id="encodedVector" alignment="TOP_LEFT" layoutX="256.0" layoutY="61.0" prefHeight="157.0" prefWidth="200.0" />
@@ -60,18 +61,18 @@
       <Label fx:id="devodedLabel" layoutX="757.0" layoutY="44.0" text="Dekoduota" />
       <Button layoutX="507.0" layoutY="226.0" mnemonicParsing="false" onMouseClicked="#decodeVector" text="Dekoduoti" />
       <Circle fx:id="decodeC" fill="#ff1f1f" layoutX="602.0" layoutY="239.0" radius="8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-      <Label fx:id="decodeLabel" alignment="TOP_LEFT" layoutX="626.0" layoutY="230.0" prefHeight="56.0" prefWidth="134.0" text="Invalid" />
-      <TextArea fx:id="channelOutput" layoutX="507.0" layoutY="61.0" onKeyTyped="#channelTextType" prefHeight="157.0" prefWidth="200.0" />
+      <Label fx:id="decodeLabel" alignment="TOP_LEFT" layoutX="626.0" layoutY="230.0" prefHeight="32.0" prefWidth="219.0" text="Invalid" wrapText="true" />
       <Label fx:id="encodedLenght" layoutX="356.0" layoutY="43.0" prefHeight="17.0" prefWidth="99.0" />
-      <TextField fx:id="probInputField" layoutX="382.0" layoutY="406.0" onKeyTyped="#probChanged" prefHeight="25.0" prefWidth="200.0" />
+      <TextField fx:id="probInputField" layoutX="382.0" layoutY="406.0" onKeyTyped="#probChanged" prefHeight="25.0" prefWidth="200.0" text="0" />
       <Label fx:id="probInput" layoutX="588.0" layoutY="410.0" />
       <Text layoutX="370.0" layoutY="423.0" strokeType="OUTSIDE" strokeWidth="0.0" text="P:" />
-      <TableView fx:id="errorPositions" layoutX="639.0" layoutY="275.0" prefHeight="200.0" prefWidth="72.0">
+      <TableView fx:id="errorPositions" layoutX="639.0" layoutY="285.0" prefHeight="200.0" prefWidth="72.0">
         <columns>
           <TableColumn fx:id="errors" prefWidth="74.0" sortable="false" text="Klaidos pozicija" />
         </columns>
       </TableView>
-      <Label fx:id="errorCount" layoutX="639.0" layoutY="258.0" prefHeight="17.0" prefWidth="72.0" text="Klaidos: " />
+      <Label fx:id="errorCount" layoutX="639.0" layoutY="267.0" prefHeight="17.0" prefWidth="72.0" text="Klaidos: " />
       <TextFlow fx:id="decodedVector" layoutX="757.0" layoutY="60.0" prefHeight="157.0" prefWidth="200.0" />
+      <VBox fx:id="textAreaContainer" layoutX="507.0" layoutY="61.0" prefHeight="157.0" prefWidth="200.0" />
    </children>
 </AnchorPane>

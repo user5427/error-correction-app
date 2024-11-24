@@ -1,0 +1,7 @@
+.red-text {
+    -fx-fill: red; /* Set text color to red */
+}
+
+.green-text {
+    -fx-fill: green; /* Set text color to blue */
+}
