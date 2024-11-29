@@ -2,6 +2,7 @@ package org.KTKT.SettingsPage;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -15,6 +16,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.KTKT.Coding.CodingManager;
 import org.KTKT.Constants.ErrorConstants;
 import org.KTKT.Constants.FileConstants;
@@ -385,7 +387,17 @@ public class SettingsController implements Initializable, GenerationStatus {
             DataManager.getInstance().saveSettings(this);
             node = (Node) event.getSource();
             Stage stage = (Stage) node.getScene().getWindow();
-            stage.setOnCloseRequest(e -> DataManager.stopThread());
+            EventHandler<WindowEvent> existingHandler = stage.getOnCloseRequest();
+
+            stage.setOnCloseRequest(e -> {
+                // Call the existing handler if it exists
+                if (existingHandler != null) {
+                    existingHandler.handle(e);
+                }
+
+                DataManager.stopThread();
+            });
+
         }
     }
 

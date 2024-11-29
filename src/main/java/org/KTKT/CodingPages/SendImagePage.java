@@ -1,6 +1,7 @@
 package org.KTKT.CodingPages;
 
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -17,8 +18,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.KTKT.Coding.CodingManager;
 import org.KTKT.Coding.ESDResultRecords.ImageESDResult;
+import org.KTKT.Data.DataManager;
 import org.KTKT.Data.DataValidator;
 
 import javax.imageio.ImageIO;
@@ -136,7 +139,16 @@ public class SendImagePage implements ESDStatus, Initializable {
 
         Node node = (Node) event.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
-        stage.setOnCloseRequest(e -> CodingManager.stopESD());
+        EventHandler<WindowEvent> existingHandler = stage.getOnCloseRequest();
+
+        stage.setOnCloseRequest(e -> {
+            // Call the existing handler if it exists
+            if (existingHandler != null) {
+                existingHandler.handle(e);
+            }
+
+            CodingManager.stopESD();
+        });
 
         try {
             CodingManager.getInstance().ESDImage(selectedFile, (float) probabilitySlider.getValue(), this);

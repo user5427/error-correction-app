@@ -29,27 +29,27 @@ public class WindowManager {
         return newStage;
     }
 
-    public static void openOverlayWindowWithJoinedCloseAction(MouseEvent event, String resource, Object controller) throws IOException {
-        Stage stage = getStage(resource, controller);
-
-        // Get the current stage
-        Node source = (Node) event.getSource();
-        Stage currentStage = (Stage) source.getScene().getWindow();
-
-        // Set the new stage as modal and set its owner to the current stage
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.initOwner(currentStage);
-
-        stage.show();
-
-        stage.setOnCloseRequest(e -> {
-            currentStage.close();
-        });
-
-        currentStage.setOnCloseRequest(e -> {
-            stage.close();
-        });
-    }
+//    public static void openOverlayWindowWithJoinedCloseAction(MouseEvent event, String resource, Object controller) throws IOException {
+//        Stage stage = getStage(resource, controller);
+//
+//        // Get the current stage
+//        Node source = (Node) event.getSource();
+//        Stage currentStage = (Stage) source.getScene().getWindow();
+//
+//        // Set the new stage as modal and set its owner to the current stage
+//        stage.initModality(Modality.WINDOW_MODAL);
+//        stage.initOwner(currentStage);
+//
+//        stage.show();
+//
+//        stage.setOnCloseRequest(e -> {
+//            currentStage.close();
+//        });
+//
+//        currentStage.setOnCloseRequest(e -> {
+//            stage.close();
+//        });
+//    }
 
     /**
      * Open a new window. Hide the current window.
@@ -59,7 +59,6 @@ public class WindowManager {
      * @throws IOException
      */
     public static void openWindow(MouseEvent event, String resource, Object controller) throws IOException {
-        // open studentEditor.fxml window
         Node node = (Node) event.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
         stage.hide(); // hide the current window
@@ -68,6 +67,7 @@ public class WindowManager {
         newStage.show();
 
         newStage.setOnCloseRequest(e -> {
+            System.out.println("Closing window and showing main");
             stage.show();
         });
     }

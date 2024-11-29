@@ -1,6 +1,7 @@
 package org.KTKT.CodingPages;
 
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -8,13 +9,16 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.KTKT.Coding.CodingManager;
 import org.KTKT.Coding.ESDResultRecords.MessageESDResult;
 import org.KTKT.Constants.ErrorConstants;
 import org.KTKT.Data.DataValidator;
 
 import java.text.DecimalFormat;
-
+import java.awt.datatransfer.StringSelection;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
 public class SendTextPage implements ESDStatus {
     boolean userInputValid = false;
 
@@ -97,7 +101,16 @@ public class SendTextPage implements ESDStatus {
 
         Node node = (Node) event.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
-        stage.setOnCloseRequest(e -> CodingManager.stopESD());
+        EventHandler<WindowEvent> existingHandler = stage.getOnCloseRequest();
+
+        stage.setOnCloseRequest(e -> {
+            // Call the existing handler if it exists
+            if (existingHandler != null) {
+                existingHandler.handle(e);
+            }
+
+            CodingManager.stopESD();
+        });
 
         try {
             CodingManager.getInstance().ESDText(text, (float) probabilitySlider.getValue(), this);
@@ -167,5 +180,28 @@ public class SendTextPage implements ESDStatus {
             sendC.setStyle("-fx-fill: green");
             sendLabel.setText("Žinutė išsiųsta.");
         });
+    }
+
+    /**
+     * Saves message without code to clipboard
+     * @param event
+     */
+    @FXML
+    void saveNoCode(MouseEvent event) {
+        StringSelection stringSelection = new StringSelection(noDecoding.getText());
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(stringSelection, null);
+    }
+
+    /**
+     * Saves message with code to clipboard
+     * @param event
+     */
+    @FXML
+    void saveWithCode(MouseEvent event) {
+        StringSelection stringSelection = new StringSelection(decodedMessage.getText());
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(stringSelection, null);
+
     }
 }
