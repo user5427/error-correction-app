@@ -3,6 +3,7 @@ package org.KTKT.Data;
 import org.KTKT.Constants.ErrorConstants;
 import org.KTKT.Data.CosetSyndromWeightTable.CosetSyndromWeight;
 import org.KTKT.Data.Matrix.Matrix;
+import org.KTKT.SettingsPage.SettingsController;
 
 import java.util.List;
 
@@ -113,16 +114,42 @@ public class DataManager {
      * Save settings
      * Used by UI
      */
-    public void saveSettings() {
+    private static boolean THREAD_ACTIVE = false;
+    public static boolean getThreadActive() {
+        return THREAD_ACTIVE;
+    }
+    public static boolean THREAD_INSTRUCTED_TO_STOP = false;
+    public static void stopThread() {
+        THREAD_INSTRUCTED_TO_STOP = true;
+    }
+    public void saveSettings(SettingsController settingsController) {
         if (!savedRowsColumnsCount) {
             throw new IllegalArgumentException(ErrorConstants.K_N_INVALID);
         }
         if (!savedMatrix) {
             throw new IllegalArgumentException(ErrorConstants.MATRIX_INVALID);
         }
-        H_matrix = DataCompute.generateH(G_matrix);
-        cosetSyndromWeights = DataCompute.generateCosetSyndromWeightTable(H_matrix);
-        savedSettings = true;
+        if (!THREAD_ACTIVE){
+            THREAD_ACTIVE = true;
+            H_matrix = DataCompute.generateH(G_matrix);
+            new Thread(() -> {
+                try {
+                    cosetSyndromWeights = DataCompute.generateCosetSyndromWeightTable(H_matrix, settingsController);
+                    if (cosetSyndromWeights != null){
+                        savedSettings = true;
+                        settingsController.receiveOKToOpenGeneratedParams();
+                    }
+                    THREAD_ACTIVE = false;
+                    THREAD_INSTRUCTED_TO_STOP = false;
+                } catch (Exception e) {
+                    savedSettings = false;
+                    THREAD_ACTIVE = false;
+                    THREAD_INSTRUCTED_TO_STOP = false;
+                    e.printStackTrace();
+                }
+            }).start();
+        }
+
     }
 
     public boolean isSavedSettings() {

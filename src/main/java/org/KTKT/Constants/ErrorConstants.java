@@ -36,7 +36,7 @@ public class ErrorConstants {
     static public String MATRIX_DIMENSIONS_INVALID = "matricos matmenys yra neteisingi (nesutampa su k arba n)";
     static public String MATRIX_NOT_CREATED = "matrica nesukurta";
     static public String INVALID_NUMBER = "neteisingas skaičius";
-    static public String VALID = "teisinga";
+    static public String VALID = "Teisinga";
     static public String ERROR = "Klaida: ";
     static public String PREVIOUS_MATRIX_NOT_FOUND = "Ankstesnė matrica nerasta";
     static public String H_MATRIX_NOT_GENERATED = "H matrica nesugeneruota";
@@ -46,6 +46,10 @@ public class ErrorConstants {
     static public final String EMPTY_TEXT = "Tekstas negali būti tuščias";
     static public final String INVALID_VECTOR_MESSAGE = "Vektorius yra neteisingas";
 
+    static public final String INVALID = "Neteisinga";
+    static public final String SAVED = "Išsaugota";
+    static public final String NOT_SAVED = "Neišsaugota";
+    static public final String INVALID_MATRIX_VALUE = "Neteisinga matricos reikšmė";
     /**
      * Matrix errors
      */
@@ -147,5 +151,7 @@ public class ErrorConstants {
     static public final String MATRIX_ELEMENTS_ZERO_ONE = "Matricos elementai turi būti arba 0, arba 1.";
     static public final String VECTOR_LENGTH_EQUAL = "Vektoriaus ilgis turi būti lygus ";
     static public final String VECTOR_ELEMENTS_ZERO_ONE = "Vektoriaus elementai turi būti arba 0, arba 1.";
+
+    static public final String SAFE_LIMIT_NKDIFFERENCE = "Vartotojo sąsaja nepalaiko didesnio skirtumo tarp stulpelių ir eilučių nei " + DataValidator.SAFE_KNDIFFERENCE_LIMIT + ". Duomenys atspausdinti konsolėje.";
 
 }

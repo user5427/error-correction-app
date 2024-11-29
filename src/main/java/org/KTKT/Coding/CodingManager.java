@@ -48,10 +48,12 @@ public class CodingManager {
                 int[] binaryMessage = TextUtils.textToBinary(message);
                 ESDBinaryRecord results = encodeSendDecodeBinary(probability, binaryMessage, textPageController);
 
-                String resultString = TextUtils.textFromBinary(results.result());
-                String noDecString = TextUtils.textFromBinary(results.noDecResult());
+                if (results != null) {
+                    String resultString = TextUtils.textFromBinary(results.result());
+                    String noDecString = TextUtils.textFromBinary(results.noDecResult());
 
-                textPageController.receiveResult(new MessageESDResult(resultString, noDecString));
+                    textPageController.receiveResult(new MessageESDResult(resultString, noDecString));
+                }
             } finally {
                 ESDactive = false;
                 FinishedExecuting = true;
@@ -122,11 +124,14 @@ public class CodingManager {
         int k = DataManager.getInstance().getRows_k();
         int additionalBits;
 
+        // start time
+        long startTime = System.currentTimeMillis();
+
         /**
          * Add additional bits to the message if needed
          */
         if (binaryMessage.length > k) {
-            additionalBits = binaryMessage.length % k;
+            additionalBits = k - binaryMessage.length % k;
         } else {
             additionalBits = k - binaryMessage.length;
         }
@@ -164,11 +169,13 @@ public class CodingManager {
             double calculateStatus = (double) i / blocks.length;
             if (calculateStatus - statusNow > 0.01){
                 statusNow = calculateStatus;
-                status.setESDStatus(statusNow);
+                long timeTaken = System.currentTimeMillis() - startTime;
+                status.setESDStatus(statusNow, timeTaken);
             }
         }
 
-        status.setESDStatus(1.0);
+        long timeTaken = System.currentTimeMillis() - startTime;
+        status.setESDStatus(1.0, timeTaken);
 
         /**
          * Convert message blocks to one array
@@ -251,6 +258,6 @@ public class CodingManager {
      */
     public int[] decodeMessageWithoutReconstruction(int[] message) {
         Matrix H_matrix = DataManager.getInstance().getH_matrix();
-        return Decoding.decodeWithoutReconstruciton(H_matrix, message);
+        return Decoding.decodeWithoutReconstruction(H_matrix, message);
     }
 }

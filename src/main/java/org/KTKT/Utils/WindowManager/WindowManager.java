@@ -86,6 +86,19 @@ public class WindowManager {
         stage.show();
     }
 
+    public static void openOverlayWindow(Node node, String resource, Object controller) throws IOException {
+        Stage stage = getStage(resource, controller);
+
+        // Get the current stage
+        Stage currentStage = (Stage) node.getScene().getWindow();
+
+        // Set the new stage as modal and set its owner to the current stage
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(currentStage);
+
+        stage.show();
+    }
+
     public static void openAlertWindow(MouseEvent event, String resource, Object controller) throws IOException {
         Stage stage = getStage(resource, controller);
 

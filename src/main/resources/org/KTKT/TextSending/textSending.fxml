@@ -28,7 +28,7 @@
       <Text layoutX="14.0" layoutY="276.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(P tikimybė)" />
       <TextArea fx:id="textField" layoutX="17.0" layoutY="61.0" onKeyTyped="#userTextType" prefHeight="157.0" prefWidth="428.0" wrapText="true" />
       <Circle fx:id="sendC" fill="#ff1f1f" layoutX="158.0" layoutY="239.0" radius="8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-      <Label fx:id="sendLabel" alignment="TOP_LEFT" layoutX="182.0" layoutY="230.0" prefHeight="56.0" prefWidth="261.0" text="Invalid" wrapText="true" />
+      <Label fx:id="sendLabel" alignment="TOP_LEFT" layoutX="182.0" layoutY="230.0" prefHeight="56.0" prefWidth="261.0" text="Neteisinga" wrapText="true" />
       <Button layoutX="18.0" layoutY="226.0" mnemonicParsing="false" onMouseClicked="#sendMessage" prefHeight="25.0" prefWidth="117.0" text="Siųsti" />
       <ImageView fitHeight="41.0" fitWidth="43.0" layoutX="467.0" layoutY="119.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -49,5 +49,6 @@
       <Label fx:id="noDecodingLabel" layoutX="529.0" layoutY="246.0" text="Be kodo" />
       <Label fx:id="noDecoding" alignment="TOP_LEFT" layoutX="529.0" layoutY="263.0" prefHeight="157.0" prefWidth="428.0" wrapText="true" />
       <ProgressBar fx:id="progressBar" layoutX="15.0" layoutY="433.0" prefHeight="18.0" prefWidth="946.0" progress="0.0" />
+      <Label fx:id="time" layoutX="14.0" layoutY="412.0" />
    </children>
 </AnchorPane>

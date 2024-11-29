@@ -110,7 +110,7 @@ public class DataCompute {
      * @param H_matrix
      * @return
      */
-    public static List<CosetSyndromWeight> generateCosetSyndromWeightTable(Matrix H_matrix) {
+    public static List<CosetSyndromWeight> generateCosetSyndromWeightTable(Matrix H_matrix, GenerationStatus generationStatus) {
         int k = H_matrix.getColumns() - H_matrix.getRows();
         int n = H_matrix.getColumns();
 
@@ -120,6 +120,8 @@ public class DataCompute {
         Arrays.fill(yVector, 0);
         boolean initialFilled = true;
 
+
+        double savedStatus = 0.0;
         while (cosetSyndromWeights.size() < sindromeCount) {
             MatrixInt res = new Matrix(H_matrix).multiply(new Matrix(yVector).transpose());
             int[] vectorRes = res.transpose().toVector();
@@ -145,7 +147,20 @@ public class DataCompute {
             } else {
                 yVector = generateSeamlessWeightVector(yVector);
             }
+
+            double status = (double) cosetSyndromWeights.size() / sindromeCount;
+            if (status - savedStatus > 0.01){
+                savedStatus = status;
+                generationStatus.sendGenerationStatus(status);
+            }
+
+            if (DataManager.THREAD_INSTRUCTED_TO_STOP){
+                return null;
+            }
         }
+
+        generationStatus.sendGenerationStatus(1.0);
+        savedStatus = 0.0;
 
         return cosetSyndromWeights;
     }

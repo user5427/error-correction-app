@@ -254,7 +254,7 @@ public class SendVectorPage implements Initializable {
             errorPositions.getItems().clear();
             errorPositions.getItems().addAll(errors);
 
-            errorCount.setText("Klaidos: " + errors.size());
+            errorCount.setText(ErrorConstants.ERROR + errors.size());
         }
 
         String noisyVector = encodedVector.getText();

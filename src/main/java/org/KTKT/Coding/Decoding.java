@@ -17,7 +17,7 @@ public class Decoding {
      * @param message
      * @return
      */
-    public static int[] decodeWithoutReconstruciton (MatrixInt H_matrix, int[] message ) {
+    public static int[] decodeWithoutReconstruction(MatrixInt H_matrix, int[] message ) {
         int k = H_matrix.getColumns() - H_matrix.getRows();
         int[] result = new int[k];
         System.arraycopy(message, 0, result, 0, k);

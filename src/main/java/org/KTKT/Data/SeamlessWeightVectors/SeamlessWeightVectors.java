@@ -3,6 +3,7 @@ package org.KTKT.Data.SeamlessWeightVectors;
 import org.KTKT.Constants.ErrorConstants;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SeamlessWeightVectors {
@@ -79,6 +80,7 @@ public class SeamlessWeightVectors {
      * @return
      */
     public static int[] generateSeamlessWeightVector(int[] vector) {
+//        System.out.println("Generating next vector for: " + Arrays.toString(vector));
         if (vector.length < 2) {
             throw new IllegalArgumentException(ErrorConstants.VECTOR_LENGTH_ATLEAST_TWO);
         }
@@ -91,7 +93,7 @@ public class SeamlessWeightVectors {
             if (myVector.length - n == i) {
                 // try to find n+1 neighbour
                 int neighbourIndex = -1;
-                for (int j = 0; j < i; j++) {
+                for (int j = i-1; j >= 0; j--) {
                     if (myVector[j] == n + 1) {
                         neighbourIndex = j;
                         break;
@@ -114,22 +116,15 @@ public class SeamlessWeightVectors {
                     neighbourIndex++;
                 }
 
-                // move to neighbour
-                // get all numbers higher than n+1
-                List<Integer> lowerNumbers = new ArrayList<>();
+                // clear everything after neighbourIndex and add lower numbers
+                int inc = n;
                 for (int j = neighbourIndex+1; j < myVector.length; j++) {
-                    if (myVector[j] < n+1 && myVector[j] != 0) {
-                        lowerNumbers.add(myVector[j]);
+                    if (inc > 0){
+                        myVector[j] = inc;
+                        --inc;
+                    } else {
+                        myVector[j] = 0;
                     }
-                }
-
-                // clear everything after neighbourIndex
-                for (int j = neighbourIndex+1; j < myVector.length; j++) {
-                    myVector[j] = 0;
-                }
-                // move to neighbour
-                for (int j = 0; j < lowerNumbers.size(); j++) {
-                    myVector[neighbourIndex+j+1] = lowerNumbers.get(j);
                 }
 
                 changed = true;
@@ -139,8 +134,8 @@ public class SeamlessWeightVectors {
 
         // increment
         if (!changed) {
-            for (int i = 0; i < myVector.length; i++) {
-                if (myVector[i] == 1 && i != myVector.length-1) {
+            for (int i = myVector.length - 1; i >= 0; i--) {
+                if (myVector[i] == 1) {
                     myVector[i] = 0;
                     myVector[i+1] = 1;
                     changed = true;

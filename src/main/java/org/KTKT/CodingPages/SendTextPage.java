@@ -2,14 +2,18 @@ package org.KTKT.CodingPages;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 import org.KTKT.Coding.CodingManager;
 import org.KTKT.Coding.ESDResultRecords.MessageESDResult;
 import org.KTKT.Constants.ErrorConstants;
 import org.KTKT.Data.DataValidator;
+
+import java.text.DecimalFormat;
 
 public class SendTextPage implements ESDStatus {
     boolean userInputValid = false;
@@ -46,6 +50,9 @@ public class SendTextPage implements ESDStatus {
 
     @FXML
     private ProgressBar progressBar;
+
+    @FXML
+    private Label time;
 
     /**
      * Changes probability when input field is changed
@@ -87,10 +94,23 @@ public class SendTextPage implements ESDStatus {
         }
 
         String text = textField.getText();
-        CodingManager.getInstance().ESDText(text, (float) probabilitySlider.getValue(), this);
+
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        stage.setOnCloseRequest(e -> CodingManager.stopESD());
+
+        try {
+            CodingManager.getInstance().ESDText(text, (float) probabilitySlider.getValue(), this);
+        } catch (Exception e) {
+            sendLabel.setText(e.getMessage());
+            sendC.setStyle("-fx-fill: red");
+            return;
+        }
 
         sendC.setStyle("-fx-fill: yellow");
-        sendLabel.setText("Sending message.");
+        sendLabel.setText("Siunčiama žinutė.");
+
+
     }
 
     /**
@@ -121,8 +141,8 @@ public class SendTextPage implements ESDStatus {
      * @param status
      */
     @Override
-    public void setESDStatus(Double status) {
-        Platform.runLater(() -> updateProgressBar(status));
+    public void setESDStatus(Double status, Long time) {
+        Platform.runLater(() -> updateProgressBar(status, time));
 
     }
 
@@ -130,8 +150,10 @@ public class SendTextPage implements ESDStatus {
      * Updates progress bar
      * @param status
      */
-    private void updateProgressBar(Double status) {
+    private void updateProgressBar(Double status, Long time) {
         progressBar.setProgress(status);
+        DecimalFormat df = new DecimalFormat("0.00");
+        this.time.setText("Trukmė: " + df.format(time / 1000.0) + "s");
     }
 
     /**
@@ -143,7 +165,7 @@ public class SendTextPage implements ESDStatus {
             decodedMessage.setText(result.withDecoding);
             noDecoding.setText(result.withoutDecoding);
             sendC.setStyle("-fx-fill: green");
-            sendLabel.setText("Message sent.");
+            sendLabel.setText("Žinutė išsiųsta.");
         });
     }
 }

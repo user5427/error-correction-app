@@ -7,8 +7,9 @@ import org.KTKT.Data.Matrix.Matrix;
  * Class for data validation
  */
 public class DataValidator {
-    public static final int KNLimit = 50;
-    public static final int KNDIFFERENCE_LIMIT = 10;
+    public static final int KNLimit = 100;
+    public static final int KNDIFFERENCE_LIMIT = 16;
+    public static final int SAFE_KNDIFFERENCE_LIMIT = 10;
 
     static public boolean ValidateRowsColumnsCount(int rowsK, int columnsN) {
         ValidateRows(rowsK);

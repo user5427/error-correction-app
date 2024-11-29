@@ -1,8 +1,12 @@
 package org.KTKT.SettingsPage;
 
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -10,10 +14,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import org.KTKT.Coding.CodingManager;
 import org.KTKT.Constants.ErrorConstants;
 import org.KTKT.Constants.FileConstants;
 import org.KTKT.Data.DataManager;
 import org.KTKT.Data.DataValidator;
+import org.KTKT.Data.GenerationStatus;
 import org.KTKT.Data.Matrix.Matrix;
 import org.KTKT.Utils.WindowManager.WindowManager;
 
@@ -24,7 +31,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class SettingsController implements Initializable {
+public class SettingsController implements Initializable, GenerationStatus {
     private int rows_k = 0, columns_n = 0;
     private boolean k_error = true, n_error = true;
     private boolean matrix_error = true;
@@ -177,7 +184,7 @@ public class SettingsController implements Initializable {
                         TextField textField = (TextField) G_Grid.getChildren().get(i * DataManager.getInstance().getColumns_n() + j);
                         matrix.set(i, j, Integer.parseInt(textField.getText()));
                     } catch (NumberFormatException e){
-                        throw new NumberFormatException("Invalid matrix value");
+                        throw new NumberFormatException(ErrorConstants.INVALID_MATRIX_VALUE);
                     }
                 }
             }
@@ -208,7 +215,7 @@ public class SettingsController implements Initializable {
             DataManager.getInstance().generateRandomG_matrix();
             updateGrid();
         } catch (IllegalArgumentException e) {
-            MatrixInputErrorLabel.setText("Error: " + e.getMessage());
+            MatrixInputErrorLabel.setText(ErrorConstants.ERROR + e.getMessage());
         }
     }
 
@@ -221,7 +228,7 @@ public class SettingsController implements Initializable {
             DataManager.getInstance().generateCleanG_matrix();
             updateGrid();
         } catch (IllegalArgumentException e) {
-            MatrixInputErrorLabel.setText("Error: " + e.getMessage());
+            MatrixInputErrorLabel.setText(ErrorConstants.ERROR + e.getMessage());
         }
     }
 
@@ -296,7 +303,7 @@ public class SettingsController implements Initializable {
             }
             setKValidation(true);
         } catch (Exception e) {
-            numberInputErrorLabel.setText("Error: " + e.getMessage());
+            numberInputErrorLabel.setText(ErrorConstants.ERROR + e.getMessage());
             setKValidation(false);
         }
     }
@@ -317,7 +324,7 @@ public class SettingsController implements Initializable {
             }
             setNValidation(true);
         } catch (Exception e) {
-            numberInputErrorLabel.setText("Error: " + e.getMessage());
+            numberInputErrorLabel.setText(ErrorConstants.ERROR + e.getMessage());
             setNValidation(false);
         }
     }
@@ -330,10 +337,10 @@ public class SettingsController implements Initializable {
         this.k_error = !valid;
         if (k_error) {
             kStatus.setFill(Color.RED);
-            kStatusLabel.setText("Invalid");
+            kStatusLabel.setText(ErrorConstants.INVALID);
         } else {
             kStatus.setFill(Color.YELLOW);
-            kStatusLabel.setText("Valid");
+            kStatusLabel.setText(ErrorConstants.VALID);
         }
     }
 
@@ -345,13 +352,15 @@ public class SettingsController implements Initializable {
         this.n_error = !valid;
         if (n_error) {
             nStatus.setFill(Color.RED);
-            nStatusLabel.setText("Invalid");
+            nStatusLabel.setText(ErrorConstants.INVALID);
         } else {
             nStatus.setFill(Color.YELLOW);
-            nStatusLabel.setText("Valid");
+            nStatusLabel.setText(ErrorConstants.VALID);
         }
     }
 
+
+    Node node;
     /**
      * Save all parameters
      * @param event
@@ -373,15 +382,10 @@ public class SettingsController implements Initializable {
         if (!error.isEmpty()){
             saveErrorLabel.setText(error.toString());
         } else {
-            try {
-                DataManager.getInstance().saveSettings();
-
-                GeneratedParameters generatedParameters = new GeneratedParameters();
-                WindowManager.openOverlayWindow(event, FileConstants.GENERATED_SETTINGS, generatedParameters);
-            } catch (IOException e) {
-//                throw e;
-                saveErrorLabel.setText("Error: " + e.getMessage());
-            }
+            DataManager.getInstance().saveSettings(this);
+            node = (Node) event.getSource();
+            Stage stage = (Stage) node.getScene().getWindow();
+            stage.setOnCloseRequest(e -> DataManager.stopThread());
         }
     }
 
@@ -406,11 +410,11 @@ public class SettingsController implements Initializable {
             DataManager.getInstance().setRowsColumnsCount(rows_k, columns_n);
             nStatus.setFill(Color.GREEN);
             kStatus.setFill(Color.GREEN);
-            nStatusLabel.setText("Saved");
-            kStatusLabel.setText("Saved");
+            nStatusLabel.setText(ErrorConstants.SAVED);
+            kStatusLabel.setText(ErrorConstants.SAVED);
             setMatrixNotValidated();
         } catch (Exception e) {
-            error.append("Error: ").append(e.getMessage()).append(". ");
+            error.append(ErrorConstants.ERROR).append(e.getMessage()).append(". ");
         }
 
         if (error.length() > 0){
@@ -447,7 +451,7 @@ public class SettingsController implements Initializable {
             }
             return true;
         } catch (Exception e){
-            MatrixInputErrorLabel.setText("Error: " + e.getMessage());
+            MatrixInputErrorLabel.setText(ErrorConstants.ERROR + e.getMessage());
             setMatrixValidation(false);
         }
         return false;
@@ -462,10 +466,10 @@ public class SettingsController implements Initializable {
         this.matrix_error = !valid;
         if (matrix_error){
             matrixStatus.setFill(Color.RED);
-            matrixStatusLabel.setText("Invalid");
+            matrixStatusLabel.setText(ErrorConstants.INVALID);
         } else {
             matrixStatus.setFill(Color.GREEN);
-            matrixStatusLabel.setText("Saved");
+            matrixStatusLabel.setText(ErrorConstants.SAVED);
         }
     }
 
@@ -474,7 +478,7 @@ public class SettingsController implements Initializable {
      */
     private void setMatrixNotValidated(){
         matrixStatus.setFill(Color.YELLOW);
-        matrixStatusLabel.setText("Not saved");
+        matrixStatusLabel.setText(ErrorConstants.NOT_SAVED);
         matrix_error = true;
     }
 
@@ -500,5 +504,25 @@ public class SettingsController implements Initializable {
             setMatrixValidation(true);
             updateGrid();
         }
+    }
+
+    @FXML
+    private ProgressBar generationProgress;
+
+    @Override
+    public void sendGenerationStatus(Double status) {
+        Platform.runLater(() -> generationProgress.setProgress(status));
+    }
+
+    public void receiveOKToOpenGeneratedParams() {
+        Platform.runLater(() -> {
+            try {
+                GeneratedParameters generatedParameters = new GeneratedParameters();
+                WindowManager.openOverlayWindow(node, FileConstants.GENERATED_SETTINGS, generatedParameters);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 }

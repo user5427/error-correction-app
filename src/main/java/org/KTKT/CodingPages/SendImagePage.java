@@ -20,11 +20,15 @@ import javafx.stage.Stage;
 import org.KTKT.Coding.CodingManager;
 import org.KTKT.Coding.ESDResultRecords.ImageESDResult;
 import org.KTKT.Data.DataValidator;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ResourceBundle;
 
 public class SendImagePage implements ESDStatus, Initializable {
@@ -62,6 +66,9 @@ public class SendImagePage implements ESDStatus, Initializable {
 
     @FXML
     private ProgressBar progressBar;
+
+    @FXML
+    private Label time;
 
     /**
      * Choose image from file system
@@ -122,7 +129,7 @@ public class SendImagePage implements ESDStatus, Initializable {
     @FXML
     void sendImage(MouseEvent event) {
         if (selectedFile == null) {
-            sendLabel.setText("Please select an image.");
+            sendLabel.setText("Prašau pasirinkti nuotrauką.");
             sendC.setStyle("-fx-fill: red");
             return;
         }
@@ -139,7 +146,7 @@ public class SendImagePage implements ESDStatus, Initializable {
             return;
         }
 
-        sendLabel.setText("Sending image.");
+        sendLabel.setText("Siunčiama nuotrauka.");
         sendC.setStyle("-fx-fill: yellow");
 
 
@@ -165,6 +172,9 @@ public class SendImagePage implements ESDStatus, Initializable {
         return new ImageView(wr).getImage();
     }
 
+
+    BufferedImage noCode;
+    BufferedImage decImage;
     /**
      * Receive result from ESD
      * @param res
@@ -173,10 +183,12 @@ public class SendImagePage implements ESDStatus, Initializable {
         Platform.runLater(() -> {
             Image decImage = convertToFxImage(res.decodedImage());
             decodedImage.setImage(decImage);
+            this.decImage = res.decodedImage();
             Image noCode = convertToFxImage(res.noCodeImage());
             noCodeImage.setImage(noCode);
+            this.noCode = res.noCodeImage();
 
-            sendLabel.setText("Image sent.");
+            sendLabel.setText("Nuotrauka išsiųsta.");
             sendC.setStyle("-fx-fill: green");
         });
     }
@@ -186,16 +198,18 @@ public class SendImagePage implements ESDStatus, Initializable {
      * @param status
      */
     @Override
-    public void setESDStatus(Double status) {
-        Platform.runLater(() -> updateProgressBar(status));
+    public void setESDStatus(Double status, Long time) {
+        Platform.runLater(() -> updateProgressBar(status, time));
     }
 
     /**
      * Update progress bar
      * @param status
      */
-    private void updateProgressBar(Double status) {
+    private void updateProgressBar(Double status, Long time) {
         progressBar.setProgress(status);
+        DecimalFormat df = new DecimalFormat("0.00");
+        this.time.setText("Trukmė: " + df.format(time / 1000.0) + "s");
     }
 
     /**
@@ -210,6 +224,42 @@ public class SendImagePage implements ESDStatus, Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+    }
+
+
+    @FXML
+    void saveDecoded(MouseEvent event) throws IOException {
+        if (decImage == null) {
+            return;
+        }
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Decoded Image");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.bmp", "*.png", "*.jpg", "*.jpeg"));
+        Node source = (Node) event.getSource();
+        Stage currentStage = (Stage) source.getScene().getWindow();
+        File file = fileChooser.showSaveDialog(currentStage);
+        ImageIO.write(decImage, "png", file);
+    }
+
+    @FXML
+    void saveNoCode(MouseEvent event) {
+        if (noCode == null) {
+            return;
+        }
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save No Code Image");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.bmp", "*.png", "*.jpg", "*.jpeg"));
+        Node source = (Node) event.getSource();
+        Stage currentStage = (Stage) source.getScene().getWindow();
+        File file = fileChooser.showSaveDialog(currentStage);
+        try {
+            ImageIO.write(noCode, "png", file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }

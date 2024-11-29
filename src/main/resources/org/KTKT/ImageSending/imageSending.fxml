@@ -27,7 +27,7 @@
       <Slider fx:id="probabilitySlider" blockIncrement="0.1" layoutX="26.0" layoutY="386.0" max="1.0" onMouseDragged="#probabilitySlider" prefHeight="14.0" prefWidth="200.0" />
       <Text layoutX="14.0" layoutY="376.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(P tikimybė)" />
       <Circle fx:id="sendC" fill="#ff1f1f" layoutX="350.0" layoutY="310.0" radius="8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-      <Label fx:id="sendLabel" alignment="TOP_LEFT" layoutX="374.0" layoutY="301.0" prefHeight="151.0" prefWidth="72.0" text="Invalid" wrapText="true" />
+      <Label fx:id="sendLabel" alignment="TOP_LEFT" layoutX="374.0" layoutY="301.0" prefHeight="151.0" prefWidth="72.0" text="Neteisinga" wrapText="true" />
       <Button layoutX="203.0" layoutY="297.0" mnemonicParsing="false" onMouseClicked="#sendImage" prefHeight="25.0" prefWidth="117.0" text="Siųsti" />
       <ImageView fitHeight="41.0" fitWidth="43.0" layoutX="467.0" layoutY="154.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -63,5 +63,8 @@
       </ImageView>
       <Button layoutX="19.0" layoutY="297.0" mnemonicParsing="false" onMouseClicked="#chooseImage" prefHeight="25.0" prefWidth="132.0" text="Pasirinkti paveikslėlį" />
       <ProgressBar fx:id="progressBar" layoutX="14.0" layoutY="562.0" prefHeight="18.0" prefWidth="946.0" progress="0.0" />
+      <Label fx:id="time" layoutX="14.0" layoutY="541.0" prefHeight="17.0" />
+      <Button layoutX="893.0" layoutY="263.0" mnemonicParsing="false" onMouseClicked="#saveDecoded" text="Išsaugoti" />
+      <Button layoutX="893.0" layoutY="524.0" mnemonicParsing="false" onMouseClicked="#saveNoCode" text="Išsaugoti" />
    </children>
 </AnchorPane>

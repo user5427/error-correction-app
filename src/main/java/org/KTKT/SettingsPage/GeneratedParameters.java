@@ -45,11 +45,22 @@ public class GeneratedParameters implements Initializable {
             Matrix H_Matrix = DataManager.getInstance().getH_matrix();
             updateGrid(H_Matrix);
             List<CosetSyndromWeight> cosets = DataManager.getInstance().getCosetSyndromWeights();
+            int k = DataManager.getInstance().getRows_k();
+            int n = DataManager.getInstance().getColumns_n();
             SyndromColumn.setCellValueFactory(new PropertyValueFactory<CosetSyndromWeight, String>("stringSyndrom"));
             WeightColumn.setCellValueFactory(new PropertyValueFactory<CosetSyndromWeight, String>("stringWeight"));
             clossetColumn.setCellValueFactory(new PropertyValueFactory<CosetSyndromWeight, String>("stringCosset"));
             Closet_Table.getItems().clear();
-            Closet_Table.getItems().addAll(cosets);
+
+            if (n - k <= DataValidator.SAFE_KNDIFFERENCE_LIMIT){
+                Closet_Table.getItems().addAll(cosets);
+            } else {
+                statusLabel.setText(ErrorConstants.ERROR + ErrorConstants.SAFE_LIMIT_NKDIFFERENCE);
+                for (CosetSyndromWeight coset : cosets) {
+                    System.out.println("Klasė: " + coset.getStringCosset() + " Sindromas: " + coset.getStringSyndrom() + " Svoris: " + coset.getStringWeight());
+                }
+            }
+
         } catch (Exception e) {
 //            throw e;
             statusLabel.setText(ErrorConstants.ERROR + e.getMessage());
