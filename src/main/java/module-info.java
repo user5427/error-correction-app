@@ -25,6 +25,9 @@ module org.KTKT {
     opens org.KTKT.Coding.Errors to javafx.fxml;
     exports org.KTKT.Coding.Errors;
 
+    opens org.KTKT.Coding.ESDResultRecords to javafx.fxml;
+    exports org.KTKT.Coding.ESDResultRecords;
+
     opens org.KTKT to javafx.fxml;
     exports org.KTKT;
 }
