@@ -67,7 +67,7 @@ public class WindowManager {
         newStage.show();
 
         newStage.setOnCloseRequest(e -> {
-            System.out.println("Closing window and showing main");
+//            System.out.println("Closing window and showing main");
             stage.show();
         });
     }

@@ -3,6 +3,9 @@ package org.KTKT.CodingPages;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -20,6 +23,9 @@ import org.KTKT.Data.CosetSyndromWeightTable.CosetSyndromWeight;
 import org.KTKT.Data.DataManager;
 import org.KTKT.Data.DataValidator;
 
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -112,6 +118,8 @@ public class SendVectorPage implements Initializable {
         probInput.setText("");
     }
 
+
+    private static String myDecodedVector;
     /**
      * Decode the vector and display it
      * @param event
@@ -121,9 +129,10 @@ public class SendVectorPage implements Initializable {
         if (!channelInputValid){
             return;
         }
+        myDecodedVector = "";
         int[] binaryVector = BinaryUtils.convertBinaryStringToIntArray(channelOutput.getText());
         int [] decoded = CodingManager.getInstance().decodeMessage(binaryVector);
-        String myDecodedVector = BinaryUtils.convertIntArrayToBinaryString(decoded);
+        myDecodedVector = BinaryUtils.convertIntArrayToBinaryString(decoded);
         decodedVector.getChildren().clear();
         for (int i = 0; i < myDecodedVector.length(); i++) {
             Text text = new Text(String.valueOf(myDecodedVector.charAt(i)));
@@ -182,6 +191,7 @@ public class SendVectorPage implements Initializable {
         decodeLabel.setText(ErrorConstants.VALID);
         decodeC.setStyle("-fx-fill: green");
         decodedVector.getChildren().clear();
+        myDecodedVector = "";
 
         // save the current user input for later analysis
         userInput = textField.getText();
@@ -296,5 +306,19 @@ public class SendVectorPage implements Initializable {
         channelOutput.setOnKeyTyped(this::channelTextType);
 
         textAreaContainer.getChildren().add(channelOutput);
+    }
+
+    @FXML
+    void saveDecoded(MouseEvent event) {
+        StringSelection stringSelection = new StringSelection(myDecodedVector);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(stringSelection, null);
+    }
+
+    @FXML
+    void saveEncoded(MouseEvent event) {
+        StringSelection stringSelection = new StringSelection(encodedVector.getText());
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(stringSelection, null);
     }
 }

@@ -134,8 +134,9 @@ public class DataManager {
             H_matrix = DataCompute.generateH(G_matrix);
             new Thread(() -> {
                 try {
-                    cosetSyndromWeights = DataCompute.generateCosetSyndromWeightTable(H_matrix, settingsController);
-                    if (cosetSyndromWeights != null){
+                    var tempCosetSyndromWeights = DataCompute.generateCosetSyndromWeightTable(H_matrix, settingsController);
+                    if (tempCosetSyndromWeights != null){
+                        cosetSyndromWeights = tempCosetSyndromWeights;
                         savedSettings = true;
                         settingsController.receiveOKToOpenGeneratedParams();
                     }

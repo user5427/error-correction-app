@@ -57,7 +57,7 @@ public class GeneratedParameters implements Initializable {
             } else {
                 statusLabel.setText(ErrorConstants.ERROR + ErrorConstants.SAFE_LIMIT_NKDIFFERENCE);
                 for (CosetSyndromWeight coset : cosets) {
-                    System.out.println("Klasė: " + coset.getStringCosset() + " Sindromas: " + coset.getStringSyndrom() + " Svoris: " + coset.getStringWeight());
+                    System.out.println("Klase: " + coset.getStringCosset() + " Sindromas: " + coset.getStringSyndrom() + " Svoris: " + coset.getStringWeight());
                 }
             }
 

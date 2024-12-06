@@ -152,6 +152,6 @@ public class ErrorConstants {
     static public final String VECTOR_LENGTH_EQUAL = "Vektoriaus ilgis turi būti lygus ";
     static public final String VECTOR_ELEMENTS_ZERO_ONE = "Vektoriaus elementai turi būti arba 0, arba 1.";
 
-    static public final String SAFE_LIMIT_NKDIFFERENCE = "Vartotojo sąsaja nepalaiko didesnio skirtumo tarp stulpelių ir eilučių nei " + DataValidator.SAFE_KNDIFFERENCE_LIMIT + ". Duomenys atspausdinti konsolėje.";
+    static public final String SAFE_LIMIT_NKDIFFERENCE = "Vartotojo sąsaja nepalaiko didesnio skirtumo tarp stulpelių ir eilučių nei " + DataValidator.SAFE_KNDIFFERENCE_LIMIT + ". Duomenys atspausdinti terminale.";
 
 }
